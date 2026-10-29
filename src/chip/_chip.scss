@@ -21,18 +21,22 @@
     height: $chip-height;
     font-family: $preferred_font;
     line-height: $chip-height;
-    padding: 0 12px;
-    border: 0;
-    border-radius: $chip-height / 2;
+    padding: 0 15px;
+    border: 1px solid $chip-border-color;
+    border-radius: $chip-border-radius;
+    box-sizing: border-box;
     background-color: $chip-bg-color;
     display: inline-block;
-    color: $text-color-primary;
+    color: $chip-text-color;
     margin: 2px 0;
     font-size: 0;
     white-space: nowrap;
 
     &__text {
         font-size: $chip-font-size;
+        font-weight: 500;
+        letter-spacing: 0.1px;
+        line-height: $chip-height - 2px;
         vertical-align: middle;
         display: inline-block;
     }
@@ -57,29 +61,38 @@
     }
     
     &__contact {
-        height: $chip-height;
-        width: $chip-height;
-        border-radius: $chip-height / 2;
+        height: $chip-height - 8px;
+        width: $chip-height - 8px;
+        border-radius: 50%;
+        margin-left: 4px;
         display: inline-block;
         vertical-align: middle;
         margin-right: 8px;
         overflow: hidden;
         text-align: center;
-        font-size: 18px;
-        line-height: 32px;
+        font-size: 12px;
+        line-height: $chip-height - 8px;
     }
     
+    &:hover {
+        background-color: $chip-bg-hover-color;
+    }
+
     &:focus {
         outline: 0;
-        @include shadow-2dp();
+        border-color: transparent;
+        background-color: $chip-border-color;
     }
     
-    &:active {
+    &:active,
+    &.is-selected {
+        border-color: transparent;
         background-color: $chip-bg-active-color;
+        color: $chip-selected-text-color;
     }
     
     &--deletable {
-        padding-right: 4px;
+        padding-right: 8px;
     }
     
     &--contact {

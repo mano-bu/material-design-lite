@@ -210,7 +210,7 @@
 
     @media screen and (max-width: $layout-screen-size-threshold) {
       margin: 4px;
-      color: rgba(0, 0, 0, 0.5);
+      color: var(--mt-on-surface-variant);
     }
 
     @media screen and (min-width: $layout-screen-size-threshold + 1px) {
@@ -415,12 +415,12 @@
     @include material-animation-default();
 
     &.is-visible {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: var(--mt-scrim);
       visibility: visible;
     }
 
     @supports (pointer-events: auto) {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: var(--mt-scrim);
       opacity: 0;
       transition-property: opacity;
       visibility: visible;
@@ -601,7 +601,7 @@
     text-align: center;
     font-weight: 500;
     font-size: $layout-tab-font-size;
-    text-transform: uppercase;
+    letter-spacing: 0.1px;
 
     color: $layout-header-tab-text-color;
     overflow: hidden;

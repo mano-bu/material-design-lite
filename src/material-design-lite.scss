@@ -20,6 +20,9 @@
 @import "variables";
 @import "mixins";
 
+// MT Pagamentos design tokens (CSS custom properties)
+@import "mt-tokens";
+
 // Resets and dependencies
 @import "resets/resets";
 @import "typography/typography";

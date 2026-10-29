@@ -27,7 +27,7 @@
   z-index: $card-z-index;
   position: relative;
   background: $card-background-color;
-  border-radius: 2px;
+  border-radius: $card-border-radius;
   box-sizing: border-box;
 }
 

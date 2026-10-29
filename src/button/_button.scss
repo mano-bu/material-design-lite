@@ -72,23 +72,31 @@ input.mdl-button[type="submit"] {
 }
 
   // Raised buttons
+  // Figma "Common Buttons/Elevated".
   .mdl-button--raised {
-    background: $button-primary-color;
+    background: $button-elevated-color;
     @include shadow-2dp();
 
+    &:hover {
+      background-color: $button-elevated-color;
+      @include shadow-3dp();
+    }
+
     &:active {
-      @include shadow-4dp();
-      background-color: $button-active-color;
+      background-color: $button-elevated-color;
+      @include shadow-2dp();
     }
 
     &:focus:not(:active) {
-      @include focus-shadow();
-      background-color: $button-active-color;
+      background-color: $button-elevated-color;
+      @include shadow-2dp();
     }
 
+    // Figma "Common Buttons/Filled": no shadow at rest.
     &.mdl-button--colored {
       background: $button-primary-color-alt;
       color: $button-secondary-color-alt;
+      box-shadow: none;
 
       &:hover {
         background-color: $button-hover-color-alt;
@@ -109,9 +117,32 @@ input.mdl-button[type="submit"] {
   }
 
 
+  // Figma "Common Buttons/Tonal".
+  .mdl-button--tonal {
+    background: $button-tonal-color;
+    color: $button-tonal-text-color;
+
+    &:hover,
+    &:focus:not(:active),
+    &:active {
+      background-color: $button-tonal-hover-color;
+    }
+
+    & .mdl-ripple {
+      background: $button-tonal-text-color;
+    }
+  }
+
+  // Figma "Common Buttons/Outlined".
+  .mdl-button--outlined {
+    border: 1px solid $button-outline-color;
+    line-height: $button-height - 2px;
+  }
+
+
   // FABs
   .mdl-button--fab {
-    border-radius: 50%;
+    border-radius: $button-fab-border-radius;
     font-size: $button-fab-font-size;
     height: $button-fab-size;
     margin: auto;
@@ -119,8 +150,9 @@ input.mdl-button[type="submit"] {
     width: $button-fab-size;
     padding: 0;
     overflow: hidden;
-    background: $button-primary-color;
-    box-shadow: 0 1px 1.5px 0 rgba(0,0,0,0.12), 0 1px 1px 0 rgba(0,0,0,0.24);
+    background: $button-fab-surface-color;
+    color: $button-secondary-color;
+    @include shadow-6dp();
     position: relative;
     line-height: normal;
 
@@ -134,25 +166,27 @@ input.mdl-button[type="submit"] {
     }
 
     &.mdl-button--mini-fab {
+      border-radius: $button-fab-mini-border-radius;
       height: $button-fab-size-mini;
       min-width: $button-fab-size-mini;
       width: $button-fab-size-mini;
     }
 
     & .mdl-button__ripple-container {
-      border-radius: 50%;
+      border-radius: inherit;
       // Fixes clipping bug in Safari.
       -webkit-mask-image: -webkit-radial-gradient(circle, white, black);
     }
 
-    &:active {
-      @include shadow-4dp();
-      background-color: $button-active-color;
+    &:hover {
+      background-color: $button-fab-surface-color;
+      @include shadow-8dp();
     }
 
+    &:active,
     &:focus:not(:active) {
-      @include focus-shadow();
-      background-color: $button-active-color;
+      background-color: $button-fab-surface-color;
+      @include shadow-6dp();
     }
 
     &.mdl-button--colored {
@@ -281,13 +315,21 @@ input.mdl-button[type="submit"] {
     }
   }
 
-  &--raised {
+  &--raised,
+  &--tonal {
     // Bump up specificity by using [disabled] twice.
     &[disabled][disabled],
     &.mdl-button--disabled.mdl-button--disabled {
       background-color: $button-primary-color-disabled;
       color: $button-secondary-color-disabled;
       box-shadow: none;
+    }
+  }
+  &--outlined {
+    // Bump up specificity by using [disabled] twice.
+    &[disabled][disabled],
+    &.mdl-button--disabled.mdl-button--disabled {
+      border-color: $button-primary-color-disabled;
     }
   }
   &--colored {

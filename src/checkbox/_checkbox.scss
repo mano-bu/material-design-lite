@@ -102,8 +102,8 @@
   background-color: transparent;
 
   .mdl-checkbox.is-focused & {
-    box-shadow: 0 0 0px ($checkbox-button-size / 2) rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0px ($checkbox-button-size / 2) rgba(var(--mt-on-surface-rgb), 0.08);
+    background-color: rgba(var(--mt-on-surface-rgb), 0.08);
   }
 
   .mdl-checkbox.is-focused.is-checked & {

@@ -23,7 +23,8 @@
   border-collapse: collapse;
   white-space: nowrap;
   font-size: $data-table-font-size;
-  background-color: unquote("rgb(#{$color-white})");
+  background-color: $data-table-background-color;
+  color: $data-table-text-color;
 
   thead {
     padding-bottom: 3px;

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR" data-mt-theme="varejo-light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MDL · MT Pagamentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Build first with: npm run build:mt -->
+  <link rel="stylesheet" href="../dist/mt/material.css">
+  <style>
+    .demo-main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 96px; }
+    .demo-section { margin-top: 40px; }
+    .demo-section > h2 { margin-bottom: 16px; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .demo-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .demo-swatch { border-radius: var(--mt-shape-medium); padding: 12px; min-height: 56px; font-size: 12px; line-height: 16px; border: 1px solid var(--mt-outline-variant); }
+    .demo-cards { display: flex; flex-wrap: wrap; gap: 16px; }
+    .demo-card-media { height: 140px; background: var(--mt-primary-container); }
+    .demo-header .mdl-textfield { padding: 0; width: auto; }
+    .demo-theme-select { font: inherit; color: var(--mt-on-primary); background: transparent; border: 1px solid rgba(var(--mt-on-primary-rgb), 0.5); border-radius: var(--mt-shape-full); padding: 6px 12px; }
+    .demo-theme-select option { color: #212121; }
+  </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header demo-header">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">MT Pagamentos · MDL</span>
+      <div class="mdl-layout-spacer"></div>
+      <label for="theme" class="mdl-layout--large-screen-only" style="margin-right: 8px;">Tema</label>
+      <select id="theme" class="demo-theme-select">
+        <option value="varejo-light">Varejo · claro</option>
+        <option value="varejo-dark">Varejo · escuro</option>
+        <option value="ativos-light">Ativos · claro</option>
+        <option value="ativos-dark">Ativos · escuro</option>
+      </select>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Menu</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="#buttons">Botões</a>
+      <a class="mdl-navigation__link" href="#fields">Campos</a>
+      <a class="mdl-navigation__link" href="#selection">Seleção</a>
+      <a class="mdl-navigation__link" href="#cards">Cards</a>
+      <a class="mdl-navigation__link" href="#data">Dados</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="demo-main">
+
+      <section class="demo-section">
+        <h1 class="mdl-typography--display-1">Componentes MDL no tema MT Pagamentos</h1>
+        <p class="mdl-typography--body-1">Cores, tipografia (Readex Pro), formas e elevações vêm da biblioteca Figma <code>ds_mt-pagamentos</code>.</p>
+      </section>
+
+      <section class="demo-section">
+        <h2 class="mdl-typography--headline">Tokens de cor</h2>
+        <div class="demo-swatches" id="swatches"></div>
+      </section>
+
+      <section class="demo-section" id="buttons">
+        <h2 class="mdl-typography--headline">Botões</h2>
+        <div class="demo-row">
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Filled</button>
+          <button class="mdl-button mdl-js-button mdl-button--tonal mdl-js-ripple-effect">Tonal</button>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Elevated</button>
+          <button class="mdl-button mdl-js-button mdl-button--outlined mdl-js-ripple-effect">Outlined</button>
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect">Text</button>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>Disabled</button>
+        </div>
+        <div class="demo-row" style="margin-top: 16px;">
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect"><i class="material-icons">add</i></button>
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"><i class="material-icons">edit</i></button>
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"><i class="material-icons">add</i></button>
+          <button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">more_vert</i></button>
+          <button id="demo-menu" class="mdl-button mdl-js-button mdl-button--outlined">Abrir menu</button>
+          <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="demo-menu">
+            <li class="mdl-menu__item">Pix</li>
+            <li class="mdl-menu__item">Boleto</li>
+            <li class="mdl-menu__item" disabled>Cartão (indisponível)</li>
+          </ul>
+          <span class="mdl-badge" data-badge="4">Notificações</span>
+        </div>
+      </section>
+
+      <section class="demo-section" id="fields">
+        <h2 class="mdl-typography--headline">Campos de texto</h2>
+        <div class="demo-row">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="f1">
+            <label class="mdl-textfield__label" for="f1">Nome completo</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-invalid">
+            <input class="mdl-textfield__input" type="text" id="f2" value="123" pattern="[a-z]+">
+            <label class="mdl-textfield__label" for="f2">Chave Pix</label>
+            <span class="mdl-textfield__error">Chave inválida</span>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="f3" disabled>
+            <label class="mdl-textfield__label" for="f3">Desabilitado</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" id="selection">
+        <h2 class="mdl-typography--headline">Seleção</h2>
+        <div class="demo-row">
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="c1" style="width: auto;">
+            <input type="checkbox" id="c1" class="mdl-checkbox__input" checked>
+            <span class="mdl-checkbox__label">Checkbox</span>
+          </label>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="r1">
+            <input type="radio" id="r1" class="mdl-radio__button" name="r" checked>
+            <span class="mdl-radio__label">Radio A</span>
+          </label>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="r2">
+            <input type="radio" id="r2" class="mdl-radio__button" name="r">
+            <span class="mdl-radio__label">Radio B</span>
+          </label>
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="s1" style="width: auto;">
+            <input type="checkbox" id="s1" class="mdl-switch__input" checked>
+            <span class="mdl-switch__label">Switch</span>
+          </label>
+          <label class="mdl-switch mdl-js-switch" for="s2" style="width: auto;">
+            <input type="checkbox" id="s2" class="mdl-switch__input">
+            <span class="mdl-switch__label">Desligado</span>
+          </label>
+        </div>
+        <div class="demo-row" style="margin-top: 16px;">
+          <span class="mdl-chip"><span class="mdl-chip__text">Filtro</span></span>
+          <span class="mdl-chip is-selected"><span class="mdl-chip__text">Selecionado</span></span>
+          <span class="mdl-chip mdl-chip--deletable"><span class="mdl-chip__text">Removível</span><button type="button" class="mdl-chip__action"><i class="material-icons">cancel</i></button></span>
+          <button type="button" class="mdl-chip"><span class="mdl-chip__text">Botão</span></button>
+        </div>
+        <div style="margin-top: 24px; max-width: 420px;">
+          <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="60">
+          <div id="p1" class="mdl-progress mdl-js-progress" style="margin-top: 24px; width: 100%;"></div>
+          <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active" style="margin-top: 24px;"></div>
+        </div>
+        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" style="margin-top: 24px;">
+          <div class="mdl-tabs__tab-bar">
+            <a href="#t1" class="mdl-tabs__tab is-active">Extrato</a>
+            <a href="#t2" class="mdl-tabs__tab">Recebíveis</a>
+            <a href="#t3" class="mdl-tabs__tab">Tarifas</a>
+          </div>
+          <div class="mdl-tabs__panel is-active" id="t1"><p style="padding: 16px;">Conteúdo da aba Extrato.</p></div>
+          <div class="mdl-tabs__panel" id="t2"><p style="padding: 16px;">Conteúdo da aba Recebíveis.</p></div>
+          <div class="mdl-tabs__panel" id="t3"><p style="padding: 16px;">Conteúdo da aba Tarifas.</p></div>
+        </div>
+      </section>
+
+      <section class="demo-section" id="cards">
+        <h2 class="mdl-typography--headline">Cards, diálogo e snackbar</h2>
+        <div class="demo-cards">
+          <div class="mdl-card">
+            <div class="mdl-card__media demo-card-media"></div>
+            <div class="mdl-card__title"><h3 class="mdl-card__title-text">Saldo disponível</h3></div>
+            <div class="mdl-card__supporting-text">R$ 12.480,00 liberados para saque hoje.</div>
+            <div class="mdl-card__actions">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="open-dialog">Sacar</button>
+              <button class="mdl-button mdl-js-button" id="show-snackbar">Detalhes</button>
+            </div>
+          </div>
+          <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title"><h3 class="mdl-card__title-text">Card elevado</h3></div>
+            <div class="mdl-card__supporting-text">Usa a classe mdl-shadow--2dp, mapeada para a Elevation 1 do Figma.</div>
+            <div class="mdl-card__actions mdl-card--border">
+              <button class="mdl-button mdl-js-button mdl-button--tonal">Ação</button>
+            </div>
+          </div>
+        </div>
+        <dialog class="mdl-dialog" id="dialog">
+          <h4 class="mdl-dialog__title">Confirmar saque?</h4>
+          <div class="mdl-dialog__content">O valor de R$ 12.480,00 será transferido para a conta cadastrada.</div>
+          <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button mdl-button--raised mdl-button--colored close">Confirmar</button>
+            <button type="button" class="mdl-button close">Cancelar</button>
+          </div>
+        </dialog>
+        <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+      </section>
+
+      <section class="demo-section" id="data">
+        <h2 class="mdl-typography--headline">Lista e tabela</h2>
+        <div class="demo-row" style="align-items: flex-start;">
+          <ul class="mdl-list" style="width: 320px;">
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-avatar">person</i>
+                <span>Ana Souza</span>
+                <span class="mdl-list__item-sub-title">Pix recebido</span>
+              </span>
+              <span class="mdl-list__item-secondary-content"><span class="mdl-list__item-secondary-info">R$ 80</span></span>
+            </li>
+            <li class="mdl-list__item">
+              <span class="mdl-list__item-primary-content"><i class="material-icons mdl-list__item-icon">receipt</i>Boleto pago</span>
+            </li>
+          </ul>
+          <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable">
+            <thead>
+              <tr><th class="mdl-data-table__cell--non-numeric">Transação</th><th>Valor</th><th class="mdl-data-table__cell--non-numeric" id="tt">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="mdl-data-table__cell--non-numeric">Pix</td><td>R$ 250,00</td><td class="mdl-data-table__cell--non-numeric">Aprovado</td></tr>
+              <tr><td class="mdl-data-table__cell--non-numeric">Débito</td><td>R$ 89,90</td><td class="mdl-data-table__cell--non-numeric">Aprovado</td></tr>
+              <tr><td class="mdl-data-table__cell--non-numeric">Crédito</td><td>R$ 1.200,00</td><td class="mdl-data-table__cell--non-numeric">Pendente</td></tr>
+            </tbody>
+          </table>
+          <div class="mdl-tooltip" data-mdl-for="tt">Situação da liquidação</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../dist/mt/material.js"></script>
+<script>
+  (function() {
+    var root = document.documentElement;
+    var select = document.getElementById('theme');
+    var saved = null;
+    try { saved = localStorage.getItem('mt-theme'); } catch (e) {}
+    if (saved) { root.setAttribute('data-mt-theme', saved); select.value = saved; }
+    select.addEventListener('change', function() {
+      root.setAttribute('data-mt-theme', select.value);
+      try { localStorage.setItem('mt-theme', select.value); } catch (e) {}
+    });
+
+    // Swatch token -> text color token used on top of it.
+    var tokens = {
+      'primary': 'on-primary', 'secondary-container': 'on-secondary-container',
+      'tertiary-container': 'on-tertiary-container', 'error': 'on-error',
+      'success': 'on-success', 'warning': 'on-warning', 'info': 'on-info',
+      'surface': 'on-surface', 'surface-container': 'on-surface',
+      'surface-container-high': 'on-surface', 'surface-container-highest': 'on-surface',
+      'outline': 'on-surface', 'on-surface': 'surface',
+      'on-surface-variant': 'surface', 'inverse-surface': 'inverse-on-surface'
+    };
+    var swatches = document.getElementById('swatches');
+    Object.keys(tokens).forEach(function(t) {
+      var el = document.createElement('div');
+      el.className = 'demo-swatch';
+      el.style.background = 'var(--mt-' + t + ')';
+      el.style.color = 'var(--mt-' + tokens[t] + ')';
+      el.textContent = '--mt-' + t;
+      swatches.appendChild(el);
+    });
+
+    window.addEventListener('load', function() {
+      document.getElementById('p1').MaterialProgress.setProgress(44);
+      var dialog = document.getElementById('dialog');
+      document.getElementById('open-dialog').addEventListener('click', function() { dialog.showModal(); });
+      Array.prototype.forEach.call(dialog.querySelectorAll('.close'), function(b) {
+        b.addEventListener('click', function() { dialog.close(); });
+      });
+      var snackbar = document.getElementById('snackbar');
+      document.getElementById('show-snackbar').addEventListener('click', function() {
+        snackbar.MaterialSnackbar.showSnackbar({message: 'Saque agendado', actionHandler: function() {}, actionText: 'Desfazer'});
+      });
+    });
+  }());
+</script>
+</body>
+</html>

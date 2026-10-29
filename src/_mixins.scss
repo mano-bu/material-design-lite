@@ -16,6 +16,8 @@
 
 /* Typography */
 
+// Sizes follow the Figma "Material typography" text styles (Readex Pro).
+
 @mixin typo-preferred-font($usePreferred: true) {
   @if $usePreferred {
     font-family: $preferred_font;
@@ -24,10 +26,10 @@
 
 @mixin typo-display-4($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
-  font-size: 112px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: 57px;
+  font-weight: 400;
+  line-height: 64px;
+  letter-spacing: -0.25px;
 
   @if $colorContrast {
     opacity: 0.54;
@@ -36,10 +38,10 @@
 
 @mixin typo-display-3($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
-  font-size: 56px;
+  font-size: 45px;
   font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
+  line-height: 52px;
+  letter-spacing: 0;
 
   @if $colorContrast {
     opacity: 0.54;
@@ -48,9 +50,10 @@
 
 @mixin typo-display-2($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
-  font-size: 45px;
+  font-size: 36px;
   font-weight: 400;
-  line-height: 48px;
+  line-height: 44px;
+  letter-spacing: 0;
 
   @if $colorContrast {
     opacity: 0.54;
@@ -59,9 +62,10 @@
 
 @mixin typo-display-1($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 400;
   line-height: 40px;
+  letter-spacing: 0;
 
   @if $colorContrast {
     opacity: 0.54;
@@ -73,6 +77,7 @@
   font-size: 24px;
   font-weight: 400;
   line-height: 32px;
+  letter-spacing: 0;
   -moz-osx-font-smoothing: grayscale;
 
   @if $colorContrast {
@@ -82,10 +87,10 @@
 
 @mixin typo-title($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.02em;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -95,9 +100,9 @@
 @mixin typo-subhead($colorContrast: false, $usePreferred: true) {
   @include typo-preferred-font($usePreferred);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 24px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.15px;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -108,8 +113,8 @@
   @include typo-preferred-font($usePreferred);
   font-size: 16px;
   font-weight: 400;
-  line-height: 28px;
-  letter-spacing: 0.04em;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -122,10 +127,10 @@
   @if $usePreferred {
     font-weight: 500;
   } @else {
-    font-weight: bold;
+    font-weight: 500;
   }
-  line-height: 24px;
-  letter-spacing: 0;
+  line-height: 20px;
+  letter-spacing: 0.1px;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -136,8 +141,8 @@
   @include typo-preferred-font($usePreferred);
   font-size: 14px;
   font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0;
+  line-height: 20px;
+  letter-spacing: 0.25px;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -148,8 +153,8 @@
   @include typo-preferred-font($usePreferred);
   font-size: 12px;
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0;
+  line-height: 16px;
+  letter-spacing: 0.4px;
 
   @if $colorContrast {
     opacity: 0.54;
@@ -197,9 +202,8 @@
   @include typo-preferred-font($usePreferred);
   font-size: 14px;
   font-weight: 500;
-  text-transform: uppercase;
   line-height: 1;
-  letter-spacing: 0;
+  letter-spacing: 0.1px;
 
   @if $colorContrast {
     opacity: 0.87;
@@ -223,47 +227,36 @@
 
 /* Shadows */
 
+// MT Pagamentos elevation levels (Figma "Elevation 1-5"), mapped onto the
+// MDL dp scale so every existing mdl-shadow--Ndp class keeps working.
+
 // Focus shadow mixin.
 @mixin focus-shadow() {
-  box-shadow: 0 0 8px rgba(0,0,0,.18),0 8px 16px rgba(0,0,0,.36);
+  box-shadow: var(--mt-elevation-2);
 }
 
 @mixin shadow-2dp() {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 3px 1px -2px rgba(0, 0, 0, $shadow-key-umbra-opacity),
-              0 1px 5px 0 rgba(0, 0, 0, $shadow-ambient-shadow-opacity);
+  box-shadow: var(--mt-elevation-1);
 }
 @mixin shadow-3dp() {
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 3px 3px -2px rgba(0, 0, 0, $shadow-key-umbra-opacity),
-              0 1px 8px 0 rgba(0, 0, 0, $shadow-ambient-shadow-opacity);
+  box-shadow: var(--mt-elevation-2);
 }
 @mixin shadow-4dp() {
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 1px 10px 0 rgba(0, 0, 0, $shadow-ambient-shadow-opacity),
-              0 2px 4px -1px rgba(0, 0, 0, $shadow-key-umbra-opacity);
+  box-shadow: var(--mt-elevation-2);
 }
 @mixin shadow-6dp() {
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 1px 18px 0 rgba(0, 0, 0, $shadow-ambient-shadow-opacity),
-              0 3px 5px -1px rgba(0, 0, 0, $shadow-key-umbra-opacity);
+  box-shadow: var(--mt-elevation-3);
 }
 @mixin shadow-8dp() {
-  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 3px 14px 2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity),
-              0 5px 5px -3px rgba(0, 0, 0, $shadow-key-umbra-opacity);
+  box-shadow: var(--mt-elevation-4);
 }
 
 @mixin shadow-16dp() {
-  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0  6px 30px 5px rgba(0, 0, 0, $shadow-ambient-shadow-opacity),
-              0  8px 10px -5px rgba(0, 0, 0, $shadow-key-umbra-opacity);
+  box-shadow: var(--mt-elevation-5);
 }
 
 @mixin shadow-24dp() {
-  box-shadow: 0  9px 46px  8px rgba(0, 0, 0, $shadow-key-penumbra-opacity),
-              0 11px 15px -7px rgba(0, 0, 0, $shadow-ambient-shadow-opacity),
-              0 24px 38px  3px rgba(0, 0, 0, $shadow-key-umbra-opacity);
+  box-shadow: var(--mt-elevation-5);
 }
 
 /* Animations */
