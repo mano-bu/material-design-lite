@@ -221,7 +221,7 @@ $layout-drawer-bg-color: unquote("rgb(#{$mt-surface-container-low})") !default;
 $layout-drawer-border-color: unquote("rgb(#{$mt-outline-variant})") !default;
 $layout-text-color: unquote("rgb(#{$mt-on-surface})") !default;
 $layout-drawer-navigation-color: unquote("rgb(#{$mt-on-surface-variant})") !default;
-$layout-drawer-navigation-link-active-background: unquote("rgb(#{$mt-secondary-container})") !default;
+$layout-drawer-navigation-link-active-background: unquote("var(--mt-secondary-container)") !default;
 $layout-drawer-navigation-link-active-color: unquote("rgb(#{$mt-on-secondary-container})") !default;
 
 // Header
@@ -314,6 +314,7 @@ $list-main-text-text-color: unquote("rgb(#{$mt-on-surface})") !default;
 $list-supporting-text-text-color: unquote("rgb(#{$mt-on-surface-variant})") !default;
 $list-icon-color: unquote("rgb(#{$mt-on-surface-variant})") !default;
 $list-avatar-color: unquote("rgb(#{$mt-on-secondary-container})") !default;
+$list-avatar-background-color: unquote("var(--mt-secondary-container)") !default;
 
 /* ==========  Item ========== */
 
@@ -608,7 +609,7 @@ $data-table-header-sorted-icon-hover-color: unquote("rgba(#{$mt-on-surface}, 0.3
 $data-table-divider-color: unquote("rgb(#{$mt-outline-variant})") !default;
 
 $data-table-hover-color: unquote("rgba(#{$mt-on-surface}, 0.04)") !default;
-$data-table-selection-color: unquote("rgb(#{$mt-secondary-container})") !default;
+$data-table-selection-color: unquote("var(--mt-secondary-container)") !default;
 
 $data-table-dividers: 1px solid $data-table-divider-color !default;
 $data-table-background-color: unquote("rgb(#{$mt-surface})") !default;
@@ -651,7 +652,7 @@ $tooltip-border-radius: 8px !default;
 // Figma "Filter / Input / Suggestion Chip": outlined, 8px corners.
 $chip-bg-color: transparent !default;
 $chip-bg-hover-color: unquote("rgb(#{$mt-surface-container-high})") !default;
-$chip-bg-active-color: unquote("rgb(#{$mt-secondary-container})") !default;
+$chip-bg-active-color: unquote("var(--mt-secondary-container)") !default;
 $chip-border-color: unquote("rgb(#{$mt-surface-container-highest})") !default;
 $chip-text-color: unquote("rgb(#{$mt-on-surface})") !default;
 $chip-selected-text-color: unquote("rgb(#{$mt-on-secondary-container})") !default;

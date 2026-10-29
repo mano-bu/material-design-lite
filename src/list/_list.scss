@@ -88,7 +88,7 @@
   box-sizing: border-box;
   border-radius: 50%;
   // Set a background colour in case the user doesn't provide an image.
-  background-color: $list-icon-color;
+  background-color: $list-avatar-background-color;
   // Set a font size and color in case the user provides a Material Icon.
   font-size: $list-avatar-size;
   color: $list-avatar-color;
