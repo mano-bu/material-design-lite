@@ -275,8 +275,12 @@ $spinner-single-color: unquote("rgb(#{$color-primary})") !default;
 
 /* ==========  Text fields  ========== */
 
-// Figma "Text Field / Filled": surface-container fill, 8px top corners,
-// bottom line that turns primary on focus.
+// Figma "Text Field / Outlined" (default): 1px outline, primary on focus.
+$input-text-outline-color: unquote("rgb(#{$mt-outline})") !default;
+$input-text-outline-hover-color: unquote("rgb(#{$mt-on-surface-variant})") !default;
+$input-text-label-background-color: unquote("rgb(#{$mt-surface})") !default;
+// Figma "Text Field / Filled" (.mdl-textfield--filled): surface-container fill,
+// 8px top corners, bottom line that turns primary on focus.
 $input-text-background-color: unquote("rgb(#{$mt-surface-container})") !default;
 $input-text-label-color: unquote("rgb(#{$mt-on-surface-variant})") !default;
 $input-text-bottom-border-color: unquote("rgb(#{$mt-surface-container-highest})") !default;
@@ -358,6 +362,7 @@ $input-text-horizontal-padding: 16px !default;
 $input-text-floating-padding-top: 24px !default;
 $input-text-floating-padding-bottom: 8px !default;
 $input-text-border-radius: 8px !default;
+$input-text-label-gap: 4px !default;
 $input-text-vertical-spacing: 20px !default;
 
 $input-text-button-size: 32px !default;
