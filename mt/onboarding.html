@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="pt-BR" data-mt-theme="varejo-light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Abertura de conta · MT Pagamentos</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Build first with: npm run build:mt. Outfit and Inter load from dist/mt/fonts. -->
+  <link rel="stylesheet" href="../dist/mt/material.css">
+  <style>
+    /* ---------- Page and device frame ---------- */
+    body { background: var(--mt-surface-container-low); }
+    .stage { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px 16px; box-sizing: border-box; }
+    .stage-bar { width: 412px; max-width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--mt-on-surface-variant); }
+    .stage-select { font: inherit; color: var(--mt-on-surface); background: var(--mt-surface); border: 1px solid var(--mt-outline); border-radius: var(--mt-shape-full); padding: 6px 12px; }
+    .device { position: relative; width: 412px; height: min(860px, calc(100vh - 96px)); min-height: 640px; background: var(--mt-surface); border-radius: 40px; box-shadow: var(--mt-elevation-3); border: 1px solid var(--mt-outline-variant); overflow: hidden; display: flex; flex-direction: column; }
+    @media (max-width: 480px) {
+      .stage { padding: 0; justify-content: flex-start; gap: 0; }
+      .stage-bar { display: none; }
+      .device { width: 100%; height: 100vh; height: 100dvh; min-height: 0; border-radius: 0; border: 0; box-shadow: none; }
+    }
+
+    /* ---------- App bar and progress ---------- */
+    .appbar { flex: none; display: flex; align-items: center; gap: 4px; height: 64px; padding: 0 16px 0 4px; }
+    .appbar[hidden] { display: none; }
+    .appbar__title { flex: 1; margin: 0 0 0 4px; }
+    .appbar__step { color: var(--mt-on-surface-variant); }
+    .appbar .mdl-button--icon { color: var(--mt-on-surface); }
+    .progress { flex: none; }
+    .progress .mdl-progress { width: 100%; }
+    .progress[hidden] { display: none; }
+
+    /* ---------- Screens ---------- */
+    .screens { flex: 1; position: relative; min-height: 0; }
+    .screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
+    .screen[hidden] { display: none; }
+    .screen.is-entering { animation: screen-in 240ms cubic-bezier(0.2, 0, 0, 1); }
+    .screen.is-entering.is-back { animation-name: screen-in-back; }
+    @keyframes screen-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes screen-in-back { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .screen.is-entering { animation: none; } }
+    .screen form { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .screen__body { flex: 1; overflow-y: auto; padding: 8px 24px 24px; }
+    .screen__title { margin: 8px 0 8px; outline: none; }
+    .screen__lead { color: var(--mt-on-surface-variant); margin: 0 0 16px; }
+    .screen__footer { flex: none; padding: 12px 24px 24px; display: flex; flex-direction: column; gap: 8px; background: var(--mt-surface); border-top: 1px solid var(--mt-outline-variant); }
+    .screen__footer .mdl-button { width: 100%; height: 48px; line-height: 48px; }
+    .screen__footer .mdl-button--outlined { line-height: 46px; }
+
+    .mdl-textfield { width: 100%; }
+    .field-row { display: flex; gap: 12px; }
+    .field-row > * { flex: 1; min-width: 0; }
+    .field-row > .field-narrow { flex: 0 0 104px; }
+    .demo-fill { align-self: flex-start; margin: 4px 0 0 -16px; }
+    .hint { font: var(--mt-type-body-small); letter-spacing: var(--mt-type-body-small-tracking); color: var(--mt-on-surface-variant); margin: -12px 16px 8px; }
+    .mdl-checkbox { height: auto; }
+    .mdl-checkbox__label { display: inline-block; line-height: 24px; }
+    .mdl-checkbox, .mdl-radio { margin: 8px 0; }
+
+    /* Password visibility toggle inside the field */
+    .mdl-textfield .pw-toggle { right: 4px; bottom: 28px; color: var(--mt-on-surface-variant); }
+    .mdl-textfield--password .mdl-textfield__input { padding-right: 52px; }
+
+    /* ---------- Welcome ---------- */
+    .welcome { padding: 32px 24px 24px; display: flex; flex-direction: column; gap: 24px; flex: 1; overflow-y: auto; }
+    .brand { display: flex; align-items: center; gap: 8px; color: var(--mt-primary); }
+    .brand .material-icons { font-size: 28px; }
+    .hero { border-radius: var(--mt-shape-extra-large); background: var(--mt-secondary-container); color: var(--mt-on-secondary-container); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .hero .material-icons { font-size: 48px; }
+    .hero h1 { margin: 0; color: var(--mt-on-surface); }
+    .benefits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+    .benefits li { display: flex; gap: 16px; align-items: flex-start; }
+    .benefits .material-icons { color: var(--mt-primary); flex: none; }
+    .benefits strong { display: block; font: var(--mt-type-title-small); letter-spacing: var(--mt-type-title-small-tracking); color: var(--mt-on-surface); }
+    .benefits span { color: var(--mt-on-surface-variant); }
+
+    /* ---------- OTP ---------- */
+    .otp { display: flex; gap: 8px; justify-content: space-between; margin: 16px 0 8px; }
+    .otp input { width: 100%; min-width: 0; height: 56px; text-align: center; font: var(--mt-type-headline-small); color: var(--mt-on-surface); background: var(--mt-surface-container); border: 0; border-bottom: 2px solid var(--mt-surface-container-highest); border-radius: var(--mt-shape-small) var(--mt-shape-small) 0 0; outline: none; caret-color: var(--mt-primary); }
+    .otp input:focus { border-bottom-color: var(--mt-primary); background: var(--mt-surface-container-high); }
+    .otp.is-invalid input { border-bottom-color: var(--mt-error); }
+    .otp-error { color: var(--mt-error); font: var(--mt-type-body-small); min-height: 16px; margin: 0; }
+    .resend { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; color: var(--mt-on-surface-variant); }
+
+    /* ---------- Address lookup ---------- */
+    .lookup { display: flex; align-items: center; gap: 12px; color: var(--mt-on-surface-variant); margin: -8px 0 8px; min-height: 28px; }
+    .lookup .mdl-spinner { width: 20px; height: 20px; }
+    .lookup[hidden] { display: none; }
+
+    /* ---------- Capture tiles ---------- */
+    .radio-row { display: flex; gap: 24px; margin: 4px 0 16px; }
+    .radio-row .mdl-radio { width: auto; }
+    .captures { display: flex; flex-direction: column; gap: 12px; }
+    .capture { display: flex; align-items: center; gap: 16px; width: 100%; padding: 16px; border-radius: var(--mt-shape-large); border: 1px dashed var(--mt-outline); background: var(--mt-surface); color: var(--mt-on-surface); font: inherit; text-align: left; cursor: pointer; }
+    .capture[hidden] { display: none; }
+    .capture:hover { background: var(--mt-surface-container-low); }
+    .capture:focus-visible { outline: 2px solid var(--mt-primary); outline-offset: 2px; }
+    .capture__icon { width: 48px; height: 48px; border-radius: var(--mt-shape-medium); background: var(--mt-secondary-container); color: var(--mt-on-secondary-container); display: grid; place-items: center; flex: none; }
+    .capture__text { flex: 1; display: flex; flex-direction: column; }
+    .capture__title { font: var(--mt-type-title-small); letter-spacing: var(--mt-type-title-small-tracking); }
+    .capture__status { font: var(--mt-type-body-small); color: var(--mt-on-surface-variant); }
+    .capture .mdl-spinner { width: 24px; height: 24px; display: none; }
+    .capture.is-loading .mdl-spinner { display: inline-block; }
+    .capture.is-loading .capture__action { display: none; }
+    .capture.is-done { border-style: solid; border-color: var(--mt-outline-variant); background: var(--mt-surface-container-low); }
+    .capture.is-done .capture__icon { background: rgba(var(--mt-success-rgb), 0.14); color: var(--mt-success); }
+    .capture.is-done .capture__status { color: var(--mt-success); }
+    .capture__action { color: var(--mt-on-surface-variant); }
+
+    /* ---------- Password rules ---------- */
+    .rules { list-style: none; margin: -8px 0 8px; padding: 0 16px; display: flex; flex-direction: column; gap: 6px; }
+    .rules li { display: flex; align-items: center; gap: 8px; color: var(--mt-on-surface-variant); }
+    .rules .material-icons { font-size: 18px; }
+    .rules li.is-ok { color: var(--mt-success); }
+
+    /* ---------- Review ---------- */
+    .review { border-radius: var(--mt-shape-large); background: var(--mt-surface-container); padding: 8px 0; margin-bottom: 12px; }
+    .review__head { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; }
+    .review__head h3 { margin: 0; }
+    .review dl { margin: 0; padding: 0 16px 8px; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; }
+    .review dt { color: var(--mt-on-surface-variant); font-weight: 400; }
+    .review dd { margin: 0; text-align: right; color: var(--mt-on-surface); overflow-wrap: anywhere; }
+    .terms-link { display: inline; color: var(--mt-primary); font: inherit; font-weight: 500; text-decoration: underline; text-align: left; cursor: pointer; background: none; border: 0; padding: 0; }
+    .mdl-checkbox__label { display: inline; }
+    .mdl-checkbox.is-upgraded { padding-left: 32px; }
+    .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 8px; }
+    .switch-row .mdl-switch { width: auto; padding-left: 52px; }
+    .switch-row .mdl-switch__label { display: none; }
+
+    /* ---------- Success ---------- */
+    .success { flex: 1; overflow-y: auto; padding: 48px 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    .success__badge { width: 112px; height: 112px; border-radius: 50%; background: rgba(var(--mt-success-rgb), 0.14); color: var(--mt-success); display: grid; place-items: center; }
+    .success__badge .material-icons { font-size: 56px; }
+    .success h1 { margin: 8px 0 0; outline: none; }
+    .success p { color: var(--mt-on-surface-variant); margin: 0; max-width: 300px; }
+    .protocol { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--mt-shape-full); background: var(--mt-surface-container); color: var(--mt-on-surface); }
+    .next-steps { width: 100%; text-align: left; margin-top: 8px; }
+
+    .mdl-dialog { width: 360px; max-width: calc(100vw - 32px); }
+    .mdl-dialog__content p { margin: 0 0 12px; }
+    .btn-loading .mdl-spinner { width: 20px; height: 20px; vertical-align: middle; }
+    .mdl-snackbar { z-index: 10; }
+  </style>
+</head>
+<body>
+<div class="stage">
+  <div class="stage-bar">
+    <span class="mt-typography--label-large">Protótipo · Abertura de conta</span>
+    <select id="theme" class="stage-select" aria-label="Tema">
+      <option value="varejo-light">Varejo · claro</option>
+      <option value="varejo-dark">Varejo · escuro</option>
+      <option value="ativos-light">Ativos · claro</option>
+      <option value="ativos-dark">Ativos · escuro</option>
+    </select>
+  </div>
+
+  <div class="device" role="application" aria-label="App MT Pagamentos">
+    <header class="appbar" id="appbar" hidden>
+      <button class="mdl-button mdl-js-button mdl-button--icon" id="back" aria-label="Voltar">
+        <i class="material-icons">arrow_back</i>
+      </button>
+      <h2 class="appbar__title mt-typography--title-large" id="appbar-title">Abrir conta</h2>
+      <span class="appbar__step mt-typography--label-medium" id="appbar-step"></span>
+    </header>
+    <div class="progress" id="progress" hidden>
+      <div id="progress-bar" class="mdl-progress mdl-js-progress" aria-hidden="true"></div>
+    </div>
+
+    <div class="screens">
+
+      <!-- 0. Welcome -->
+      <section class="screen" data-screen="welcome" aria-labelledby="t-welcome">
+        <div class="welcome">
+          <div class="brand"><i class="material-icons">account_balance</i><span class="mt-typography--title-medium">MT Pagamentos</span></div>
+          <div class="hero">
+            <i class="material-icons" aria-hidden="true">savings</i>
+            <h1 class="mt-typography--headline-medium screen__title" id="t-welcome" tabindex="-1">Sua conta digital em poucos minutos</h1>
+            <p class="mt-typography--body-large" style="margin:0;">Abra sua conta pelo celular, sem filas e sem papelada.</p>
+          </div>
+          <ul class="benefits">
+            <li><i class="material-icons">pix</i><div><strong>Pix e boletos</strong><span class="mt-typography--body-medium">Pague e receba na hora, a qualquer momento.</span></div></li>
+            <li><i class="material-icons">credit_card</i><div><strong>Cartão de débito</strong><span class="mt-typography--body-medium">Peça o seu assim que a conta for aprovada.</span></div></li>
+            <li><i class="material-icons">verified_user</i><div><strong>Seus dados protegidos</strong><span class="mt-typography--body-medium">Usamos suas informações só para abrir a conta.</span></div></li>
+          </ul>
+        </div>
+        <div class="screen__footer">
+          <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" data-action="start">Abrir minha conta</button>
+          <button type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-action="login">Já tenho conta</button>
+        </div>
+      </section>
+
+      <!-- 1. Personal data -->
+      <section class="screen" data-screen="personal" hidden aria-labelledby="t-personal">
+        <form novalidate data-form="personal">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-personal" tabindex="-1">Vamos começar pelos seus dados</h1>
+            <p class="screen__lead mt-typography--body-medium">Use as mesmas informações do seu documento.</p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="name" name="name" autocomplete="name" autocapitalize="words">
+              <label class="mdl-textfield__label" for="name">Nome completo</label>
+              <span class="mdl-textfield__error" id="name-error"></span>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" data-mask="cpf">
+              <label class="mdl-textfield__label" for="cpf">CPF</label>
+              <span class="mdl-textfield__error" id="cpf-error"></span>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="birth" name="birth" inputmode="numeric" autocomplete="bday" maxlength="10" data-mask="date" placeholder="DD/MM/AAAA">
+              <label class="mdl-textfield__label" for="birth">Data de nascimento</label>
+              <span class="mdl-textfield__error" id="birth-error"></span>
+            </div>
+            <button type="button" class="mdl-button mdl-js-button demo-fill" data-demo="personal">Preencher com dados de exemplo</button>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Continuar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 2. Contact -->
+      <section class="screen" data-screen="contact" hidden aria-labelledby="t-contact">
+        <form novalidate data-form="contact">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-contact" tabindex="-1">Como falamos com você?</h1>
+            <p class="screen__lead mt-typography--body-medium">Vamos enviar um código por SMS para confirmar o celular.</p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="email" id="email" name="email" autocomplete="email" inputmode="email">
+              <label class="mdl-textfield__label" for="email">E-mail</label>
+              <span class="mdl-textfield__error" id="email-error"></span>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="tel" id="phone" name="phone" autocomplete="tel-national" inputmode="numeric" maxlength="15" data-mask="phone">
+              <label class="mdl-textfield__label" for="phone">Celular com DDD</label>
+              <span class="mdl-textfield__error" id="phone-error"></span>
+            </div>
+            <button type="button" class="mdl-button mdl-js-button demo-fill" data-demo="contact">Preencher com dados de exemplo</button>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Enviar código</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 3. SMS verification -->
+      <section class="screen" data-screen="verify" hidden aria-labelledby="t-verify">
+        <form novalidate data-form="verify">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-verify" tabindex="-1">Digite o código</h1>
+            <p class="screen__lead mt-typography--body-medium">Enviamos um código de 6 dígitos para <strong id="verify-phone"></strong>.</p>
+            <div class="otp" id="otp" role="group" aria-label="Código de verificação" aria-describedby="otp-error">
+              <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Dígito 1">
+              <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
+              <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
+              <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
+              <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
+              <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+            </div>
+            <p class="otp-error" id="otp-error" aria-live="polite"></p>
+            <p class="mt-typography--body-small" style="color: var(--mt-on-surface-variant); margin: 4px 0 0;">No protótipo, qualquer código de 6 dígitos funciona, exceto 000000.</p>
+            <div class="resend">
+              <span class="mt-typography--body-medium" id="resend-label">Reenviar em 30s</span>
+              <button type="button" class="mdl-button mdl-js-button" id="resend" disabled>Reenviar código</button>
+            </div>
+            <button type="button" class="mdl-button mdl-js-button demo-fill" data-action="edit-phone">Alterar número</button>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Verificar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 4. Address -->
+      <section class="screen" data-screen="address" hidden aria-labelledby="t-address">
+        <form novalidate data-form="address">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-address" tabindex="-1">Onde você mora?</h1>
+            <p class="screen__lead mt-typography--body-medium">Informe o CEP e completamos o resto.</p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" data-mask="cep">
+              <label class="mdl-textfield__label" for="cep">CEP</label>
+              <span class="mdl-textfield__error" id="cep-error"></span>
+            </div>
+            <div class="lookup" id="lookup" hidden aria-live="polite">
+              <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+              <span class="mt-typography--body-medium">Buscando endereço…</span>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="street" name="street" autocomplete="address-line1">
+              <label class="mdl-textfield__label" for="street">Rua</label>
+              <span class="mdl-textfield__error" id="street-error"></span>
+            </div>
+            <div class="field-row">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label field-narrow">
+                <input class="mdl-textfield__input" type="text" id="number" name="number" inputmode="numeric" autocomplete="off">
+                <label class="mdl-textfield__label" for="number">Número</label>
+                <span class="mdl-textfield__error" id="number-error"></span>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="complement" name="complement" autocomplete="address-line2">
+                <label class="mdl-textfield__label" for="complement">Complemento (opcional)</label>
+              </div>
+            </div>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="no-number">
+              <input type="checkbox" id="no-number" class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label">Endereço sem número</span>
+            </label>
+            <div class="field-row">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="district" name="district">
+                <label class="mdl-textfield__label" for="district">Bairro</label>
+                <span class="mdl-textfield__error" id="district-error"></span>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="city" name="city" autocomplete="address-level2">
+                <label class="mdl-textfield__label" for="city">Cidade</label>
+                <span class="mdl-textfield__error" id="city-error"></span>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label field-narrow">
+                <input class="mdl-textfield__input" type="text" id="uf" name="uf" autocomplete="address-level1" maxlength="2" autocapitalize="characters">
+                <label class="mdl-textfield__label" for="uf">UF</label>
+                <span class="mdl-textfield__error" id="uf-error"></span>
+              </div>
+            </div>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Continuar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 5. Documents -->
+      <section class="screen" data-screen="documents" hidden aria-labelledby="t-documents">
+        <form novalidate data-form="documents">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-documents" tabindex="-1">Fotos do documento e selfie</h1>
+            <p class="screen__lead mt-typography--body-medium">Precisamos confirmar que é você mesmo. Escolha o documento:</p>
+            <div class="radio-row" role="radiogroup" aria-label="Tipo de documento">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="doc-cnh">
+                <input type="radio" id="doc-cnh" class="mdl-radio__button" name="doc" value="cnh" checked>
+                <span class="mdl-radio__label">CNH</span>
+              </label>
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="doc-rg">
+                <input type="radio" id="doc-rg" class="mdl-radio__button" name="doc" value="rg">
+                <span class="mdl-radio__label">RG</span>
+              </label>
+            </div>
+            <div class="captures">
+              <button type="button" class="capture" data-capture="cnh" data-doc="cnh">
+                <span class="capture__icon"><i class="material-icons">badge</i></span>
+                <span class="capture__text"><span class="capture__title">CNH aberta</span><span class="capture__status">Toque para tirar a foto</span></span>
+                <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+                <i class="material-icons capture__action">photo_camera</i>
+              </button>
+              <button type="button" class="capture" data-capture="rg-front" data-doc="rg" hidden>
+                <span class="capture__icon"><i class="material-icons">badge</i></span>
+                <span class="capture__text"><span class="capture__title">Frente do RG</span><span class="capture__status">Toque para tirar a foto</span></span>
+                <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+                <i class="material-icons capture__action">photo_camera</i>
+              </button>
+              <button type="button" class="capture" data-capture="rg-back" data-doc="rg" hidden>
+                <span class="capture__icon"><i class="material-icons">flip</i></span>
+                <span class="capture__text"><span class="capture__title">Verso do RG</span><span class="capture__status">Toque para tirar a foto</span></span>
+                <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+                <i class="material-icons capture__action">photo_camera</i>
+              </button>
+              <button type="button" class="capture" data-capture="selfie">
+                <span class="capture__icon"><i class="material-icons">face</i></span>
+                <span class="capture__text"><span class="capture__title">Selfie</span><span class="capture__status">Toque para tirar a foto</span></span>
+                <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+                <i class="material-icons capture__action">photo_camera</i>
+              </button>
+            </div>
+            <p class="mt-typography--body-small" style="color: var(--mt-on-surface-variant); margin: 16px 0 0;">No protótipo, a câmera é simulada: nenhuma foto é tirada ou enviada.</p>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Continuar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 6. Password -->
+      <section class="screen" data-screen="password" hidden aria-labelledby="t-password">
+        <form novalidate data-form="password">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-password" tabindex="-1">Crie sua senha de acesso</h1>
+            <p class="screen__lead mt-typography--body-medium">Você vai usá-la para entrar no app.</p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--password">
+              <input class="mdl-textfield__input" type="password" id="pw" name="pw" autocomplete="new-password">
+              <label class="mdl-textfield__label" for="pw">Senha</label>
+              <span class="mdl-textfield__error" id="pw-error"></span>
+              <button type="button" class="mdl-button mdl-js-button mdl-button--icon pw-toggle" data-toggle="pw" aria-label="Mostrar senha"><i class="material-icons">visibility</i></button>
+            </div>
+            <ul class="rules mt-typography--body-small" id="rules" aria-live="polite">
+              <li data-rule="length"><i class="material-icons">radio_button_unchecked</i>Pelo menos 8 caracteres</li>
+              <li data-rule="mix"><i class="material-icons">radio_button_unchecked</i>Letras e números</li>
+              <li data-rule="symbol"><i class="material-icons">radio_button_unchecked</i>Um símbolo, como ! @ # $</li>
+            </ul>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--password">
+              <input class="mdl-textfield__input" type="password" id="pw2" name="pw2" autocomplete="new-password">
+              <label class="mdl-textfield__label" for="pw2">Confirme a senha</label>
+              <span class="mdl-textfield__error" id="pw2-error"></span>
+              <button type="button" class="mdl-button mdl-js-button mdl-button--icon pw-toggle" data-toggle="pw2" aria-label="Mostrar senha"><i class="material-icons">visibility</i></button>
+            </div>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Continuar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 7. Review and terms -->
+      <section class="screen" data-screen="review" hidden aria-labelledby="t-review">
+        <form novalidate data-form="review">
+          <div class="screen__body">
+            <h1 class="mt-typography--headline-small screen__title" id="t-review" tabindex="-1">Confira seus dados</h1>
+            <p class="screen__lead mt-typography--body-medium">Se algo estiver errado, toque em Editar.</p>
+            <div class="review">
+              <div class="review__head"><h3 class="mt-typography--title-small">Dados pessoais</h3><button type="button" class="mdl-button mdl-js-button" data-edit="personal">Editar</button></div>
+              <dl class="mt-typography--body-medium">
+                <dt>Nome</dt><dd data-review="name"></dd>
+                <dt>CPF</dt><dd data-review="cpf"></dd>
+                <dt>Nascimento</dt><dd data-review="birth"></dd>
+              </dl>
+            </div>
+            <div class="review">
+              <div class="review__head"><h3 class="mt-typography--title-small">Contato</h3><button type="button" class="mdl-button mdl-js-button" data-edit="contact">Editar</button></div>
+              <dl class="mt-typography--body-medium">
+                <dt>E-mail</dt><dd data-review="email"></dd>
+                <dt>Celular</dt><dd data-review="phone"></dd>
+              </dl>
+            </div>
+            <div class="review">
+              <div class="review__head"><h3 class="mt-typography--title-small">Endereço</h3><button type="button" class="mdl-button mdl-js-button" data-edit="address">Editar</button></div>
+              <dl class="mt-typography--body-medium">
+                <dt>Endereço</dt><dd data-review="address"></dd>
+                <dt>CEP</dt><dd data-review="cep"></dd>
+              </dl>
+            </div>
+            <label class="mdl-checkbox mdl-js-checkbox" for="terms">
+              <input type="checkbox" id="terms" class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label mt-typography--body-medium">Li e aceito os <button type="button" class="terms-link" data-action="terms">Termos de uso e a Política de Privacidade</button></span>
+            </label>
+            <p class="otp-error" id="terms-error" aria-live="polite"></p>
+            <div class="switch-row">
+              <span class="mt-typography--body-medium">Quero receber novidades por e-mail</span>
+              <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="news">
+                <input type="checkbox" id="news" class="mdl-switch__input">
+                <span class="mdl-switch__label">Novidades por e-mail</span>
+              </label>
+            </div>
+          </div>
+          <div class="screen__footer">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="submit-account">Abrir minha conta</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 8. Success -->
+      <section class="screen" data-screen="success" hidden aria-labelledby="t-success">
+        <div class="success">
+          <div class="success__badge" aria-hidden="true"><i class="material-icons">check</i></div>
+          <h1 class="mt-typography--headline-small" id="t-success" tabindex="-1">Recebemos seu cadastro!</h1>
+          <p class="mt-typography--body-medium">Sua conta está em análise. Avisaremos por e-mail em até 1 dia útil.</p>
+          <span class="protocol mt-typography--label-large"><i class="material-icons" aria-hidden="true">receipt_long</i><span id="protocol"></span></span>
+          <ul class="mdl-list next-steps">
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content"><i class="material-icons mdl-list__item-avatar">mail</i><span>Fique de olho no e-mail</span><span class="mdl-list__item-sub-title" id="success-email"></span></span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content"><i class="material-icons mdl-list__item-avatar">credit_card</i><span>Peça seu cartão</span><span class="mdl-list__item-sub-title">Disponível após a aprovação</span></span>
+            </li>
+          </ul>
+        </div>
+        <div class="screen__footer">
+          <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" data-action="restart">Concluir</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+  </div>
+</div>
+
+<dialog class="mdl-dialog" id="terms-dialog" aria-labelledby="terms-title">
+  <h4 class="mdl-dialog__title" id="terms-title">Termos de uso</h4>
+  <div class="mdl-dialog__content">
+    <p>Este é um texto de exemplo para o protótipo. Na versão final, aqui entram os Termos de uso e a Política de Privacidade da MT Pagamentos.</p>
+    <p>Resumo: usamos seus dados para abrir e manter sua conta, cumprir obrigações legais e prevenir fraudes. Você pode pedir a exclusão dos dados opcionais a qualquer momento.</p>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button mdl-button--raised mdl-button--colored" data-action="accept-terms">Li e aceito</button>
+    <button type="button" class="mdl-button" data-action="close-terms">Fechar</button>
+  </div>
+</dialog>
+
+<script src="../dist/mt/material.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var STEPS = [
+    {id: 'personal', title: 'Dados pessoais'},
+    {id: 'contact', title: 'Contato'},
+    {id: 'verify', title: 'Verificação'},
+    {id: 'address', title: 'Endereço'},
+    {id: 'documents', title: 'Documentos'},
+    {id: 'password', title: 'Senha'},
+    {id: 'review', title: 'Revisão'}
+  ];
+  var $ = function(sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var digits = function(v) { return v.replace(/\D/g, ''); };
+
+  var current = 'welcome';
+  var returnToReview = false;
+  var captures = {};
+
+  // ---------- Theme ----------
+  var themeSelect = $('#theme');
+  try {
+    var savedTheme = localStorage.getItem('mt-theme');
+    if (savedTheme) { document.documentElement.setAttribute('data-mt-theme', savedTheme); themeSelect.value = savedTheme; }
+  } catch (e) {}
+  themeSelect.addEventListener('change', function() {
+    document.documentElement.setAttribute('data-mt-theme', themeSelect.value);
+    try { localStorage.setItem('mt-theme', themeSelect.value); } catch (e) {}
+  });
+
+  // ---------- Masks ----------
+  var masks = {
+    cpf: function(v) {
+      v = digits(v).slice(0, 11);
+      return v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    },
+    date: function(v) {
+      v = digits(v).slice(0, 8);
+      return v.replace(/(\d{2})(\d)/, '$1/$2').replace(/(\d{2})(\d)/, '$1/$2');
+    },
+    phone: function(v) {
+      v = digits(v).slice(0, 11);
+      if (v.length > 6) { return '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7); }
+      if (v.length > 2) { return '(' + v.slice(0, 2) + ') ' + v.slice(2); }
+      return v.length ? '(' + v : v;
+    },
+    cep: function(v) {
+      v = digits(v).slice(0, 8);
+      return v.length > 5 ? v.slice(0, 5) + '-' + v.slice(5) : v;
+    }
+  };
+  $$('[data-mask]').forEach(function(input) {
+    input.addEventListener('input', function() {
+      input.value = masks[input.getAttribute('data-mask')](input.value);
+    });
+  });
+
+  // ---------- Validation ----------
+  function validCPF(v) {
+    v = digits(v);
+    if (v.length !== 11 || /^(\d)\1+$/.test(v)) { return false; }
+    for (var t = 9; t < 11; t++) {
+      var sum = 0;
+      for (var i = 0; i < t; i++) { sum += Number(v[i]) * (t + 1 - i); }
+      if ((sum * 10) % 11 % 10 !== Number(v[t])) { return false; }
+    }
+    return true;
+  }
+  function parseDate(v) {
+    var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v);
+    if (!m) { return null; }
+    var d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+    return d.getDate() === Number(m[1]) && d.getMonth() === Number(m[2]) - 1 ? d : null;
+  }
+  function age(d) {
+    var now = new Date();
+    var a = now.getFullYear() - d.getFullYear();
+    if (now < new Date(now.getFullYear(), d.getMonth(), d.getDate())) { a--; }
+    return a;
+  }
+
+  var rules = {
+    name: function(v) {
+      v = v.trim();
+      if (!v) { return 'Informe seu nome completo.'; }
+      if (v.split(/\s+/).length < 2) { return 'Informe nome e sobrenome.'; }
+      return '';
+    },
+    cpf: function(v) {
+      if (!digits(v)) { return 'Informe seu CPF.'; }
+      return validCPF(v) ? '' : 'CPF inválido. Confira os números.';
+    },
+    birth: function(v) {
+      if (!v) { return 'Informe sua data de nascimento.'; }
+      var d = parseDate(v);
+      if (!d) { return 'Use o formato DD/MM/AAAA.'; }
+      var a = age(d);
+      if (a < 18) { return 'É preciso ter 18 anos ou mais para abrir a conta.'; }
+      if (a > 120) { return 'Confira o ano de nascimento.'; }
+      return '';
+    },
+    email: function(v) {
+      if (!v.trim()) { return 'Informe seu e-mail.'; }
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'E-mail inválido.';
+    },
+    phone: function(v) {
+      var d = digits(v);
+      if (!d) { return 'Informe seu celular.'; }
+      if (d.length !== 11 || d[2] !== '9' || Number(d.slice(0, 2)) < 11) { return 'Informe um celular com DDD, como (11) 91234-5678.'; }
+      return '';
+    },
+    cep: function(v) { return digits(v).length === 8 ? '' : 'Informe um CEP com 8 dígitos.'; },
+    street: function(v) { return v.trim() ? '' : 'Informe a rua.'; },
+    number: function(v) { return $('#no-number').checked || v.trim() ? '' : 'Informe o número.'; },
+    district: function(v) { return v.trim() ? '' : 'Informe o bairro.'; },
+    city: function(v) { return v.trim() ? '' : 'Informe a cidade.'; },
+    uf: function(v) { return /^[A-Za-z]{2}$/.test(v.trim()) ? '' : 'UF com 2 letras.'; },
+    pw: function(v) {
+      var r = passwordRules(v);
+      return r.length && r.mix && r.symbol ? '' : 'A senha não atende a todos os requisitos.';
+    },
+    pw2: function(v) {
+      if (!v) { return 'Confirme a senha.'; }
+      return v === $('#pw').value ? '' : 'As senhas não são iguais.';
+    }
+  };
+
+  function setFieldError(input, message) {
+    input.setCustomValidity(message);
+    var error = document.getElementById(input.id + '-error');
+    if (error) { error.textContent = message; }
+    input.setAttribute('aria-invalid', message ? 'true' : 'false');
+    if (error) { input.setAttribute('aria-describedby', error.id); }
+    var field = input.closest('.mdl-textfield');
+    if (field && field.MaterialTextfield) { field.MaterialTextfield.checkValidity(); }
+  }
+  function validateField(input) {
+    var rule = rules[input.name];
+    if (!rule) { return true; }
+    var message = input.disabled ? '' : rule(input.value);
+    setFieldError(input, message);
+    return !message;
+  }
+  $$('input[name]').forEach(function(input) {
+    if (!rules[input.name]) { return; }
+    input.addEventListener('blur', function() { if (input.value) { validateField(input); } });
+    input.addEventListener('input', function() {
+      if (input.validity.customError) { setFieldError(input, ''); }
+    });
+  });
+  function validateForm(form) {
+    var firstInvalid = null;
+    $$('input[name]', form).forEach(function(input) {
+      if (!validateField(input) && !firstInvalid) { firstInvalid = input; }
+    });
+    if (firstInvalid) { firstInvalid.focus(); }
+    return !firstInvalid;
+  }
+  function setValue(id, value) {
+    var input = document.getElementById(id);
+    input.value = value;
+    setFieldError(input, '');
+    var field = input.closest('.mdl-textfield');
+    if (field && field.MaterialTextfield) { field.MaterialTextfield.checkDirty(); }
+  }
+
+  // ---------- Navigation ----------
+  function show(id, direction) {
+    var from = $('[data-screen="' + current + '"]');
+    var to = $('[data-screen="' + id + '"]');
+    from.hidden = true;
+    to.hidden = false;
+    to.classList.remove('is-entering', 'is-back');
+    void to.offsetWidth;
+    to.classList.add('is-entering');
+    if (direction === 'back') { to.classList.add('is-back'); }
+    current = id;
+
+    var index = STEPS.map(function(s) { return s.id; }).indexOf(id);
+    var inFlow = index >= 0;
+    $('#appbar').hidden = !inFlow;
+    $('#progress').hidden = !inFlow;
+    if (inFlow) {
+      $('#appbar-title').textContent = STEPS[index].title;
+      $('#appbar-step').textContent = (index + 1) + ' de ' + STEPS.length;
+      $('#progress-bar').MaterialProgress.setProgress((index + 1) / STEPS.length * 100);
+    }
+    if (id === 'review') { fillReview(); }
+    var body = $('.screen__body', to);
+    if (body) { body.scrollTop = 0; }
+    var heading = $('[tabindex="-1"]', to);
+    if (heading) { heading.focus({preventScroll: true}); }
+  }
+  function next(fromId) {
+    if (returnToReview && fromId !== 'contact') { returnToReview = false; show('review'); return; }
+    var index = STEPS.map(function(s) { return s.id; }).indexOf(fromId);
+    show(STEPS[index + 1].id);
+  }
+  $('#back').addEventListener('click', function() {
+    var index = STEPS.map(function(s) { return s.id; }).indexOf(current);
+    if (returnToReview && current !== 'verify') { returnToReview = false; show('review', 'back'); return; }
+    show(index <= 0 ? 'welcome' : STEPS[index - 1].id, 'back');
+  });
+
+  // ---------- Snackbar ----------
+  var snackbar;
+  function toast(message) { snackbar.showSnackbar({message: message, timeout: 2750}); }
+
+  // ---------- Step handlers ----------
+  var handlers = {
+    personal: function() { next('personal'); },
+    contact: function() { startVerification(); next('contact'); },
+    verify: function() {
+      var code = $$('#otp input').map(function(i) { return i.value; }).join('');
+      if (code.length < 6) { otpError('Digite os 6 dígitos do código.'); return; }
+      if (code === '000000') { otpError('Código incorreto. Confira o SMS e tente de novo.'); return; }
+      otpError('');
+      next('verify');
+    },
+    address: function() { next('address'); },
+    documents: function() {
+      var needed = $$('.capture').filter(function(c) { return !c.hidden; });
+      var missing = needed.filter(function(c) { return !captures[c.getAttribute('data-capture')]; });
+      if (missing.length) { toast('Envie todas as fotos para continuar.'); missing[0].focus(); return; }
+      next('documents');
+    },
+    password: function() { next('password'); },
+    review: function() {
+      if (!$('#terms').checked) {
+        $('#terms-error').textContent = 'Aceite os termos para abrir a conta.';
+        $('#terms').focus();
+        return;
+      }
+      $('#terms-error').textContent = '';
+      var button = $('#submit-account');
+      button.disabled = true;
+      button.classList.add('btn-loading');
+      button.innerHTML = '<span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span> Abrindo conta…';
+      componentHandler.upgradeElements(button);
+      setTimeout(function() {
+        button.disabled = false;
+        button.classList.remove('btn-loading');
+        button.textContent = 'Abrir minha conta';
+        var first = $('#name').value.trim().split(/\s+/)[0];
+        $('#t-success').textContent = 'Recebemos seu cadastro, ' + first + '!';
+        $('#success-email').textContent = 'Vamos escrever para ' + $('#email').value.trim();
+        $('#protocol').textContent = 'Protocolo MT-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 900000) + 100000);
+        show('success');
+      }, 1500);
+    }
+  };
+  $$('form[data-form]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!validateForm(form)) { return; }
+      handlers[form.getAttribute('data-form')]();
+    });
+  });
+
+  // ---------- Demo data ----------
+  var demo = {
+    personal: {name: 'Ana Souza Lima', cpf: '529.982.247-25', birth: '14/03/1992'},
+    contact: {email: 'ana.souza@exemplo.com.br', phone: '(65) 99876-5432'}
+  };
+  $$('[data-demo]').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var data = demo[button.getAttribute('data-demo')];
+      Object.keys(data).forEach(function(id) { setValue(id, data[id]); });
+    });
+  });
+
+  // ---------- SMS verification ----------
+  var otpInputs = $$('#otp input');
+  var resendTimer = null;
+  function otpError(message) {
+    $('#otp-error').textContent = message;
+    $('#otp').classList.toggle('is-invalid', !!message);
+    if (message) { otpInputs[0].focus(); }
+  }
+  function startVerification() {
+    var d = digits($('#phone').value);
+    $('#verify-phone').textContent = '(' + d.slice(0, 2) + ') ' + d[2] + '****-' + d.slice(7);
+    otpInputs.forEach(function(i) { i.value = ''; });
+    otpError('');
+    startResendTimer();
+  }
+  function startResendTimer() {
+    var seconds = 30;
+    var label = $('#resend-label');
+    var button = $('#resend');
+    button.disabled = true;
+    label.textContent = 'Reenviar em ' + seconds + 's';
+    clearInterval(resendTimer);
+    resendTimer = setInterval(function() {
+      seconds--;
+      label.textContent = seconds > 0 ? 'Reenviar em ' + seconds + 's' : 'Não recebeu o código?';
+      if (seconds <= 0) { clearInterval(resendTimer); button.disabled = false; }
+    }, 1000);
+  }
+  $('#resend').addEventListener('click', function() {
+    startResendTimer();
+    toast('Enviamos um novo código por SMS.');
+  });
+  otpInputs.forEach(function(input, i) {
+    input.addEventListener('input', function() {
+      input.value = digits(input.value).slice(-1);
+      if (input.value && i < otpInputs.length - 1) { otpInputs[i + 1].focus(); }
+      if ($('#otp').classList.contains('is-invalid')) { $('#otp-error').textContent = ''; $('#otp').classList.remove('is-invalid'); }
+    });
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace' && !input.value && i > 0) { otpInputs[i - 1].focus(); }
+      if (e.key === 'ArrowLeft' && i > 0) { otpInputs[i - 1].focus(); }
+      if (e.key === 'ArrowRight' && i < otpInputs.length - 1) { otpInputs[i + 1].focus(); }
+    });
+    input.addEventListener('paste', function(e) {
+      var text = digits((e.clipboardData || window.clipboardData).getData('text')).slice(0, 6);
+      if (!text) { return; }
+      e.preventDefault();
+      text.split('').forEach(function(ch, k) { otpInputs[k].value = ch; });
+      otpInputs[Math.min(text.length, 6) - 1].focus();
+    });
+  });
+  $('[data-action="edit-phone"]').addEventListener('click', function() { show('contact', 'back'); });
+
+  // ---------- Address lookup (simulated) ----------
+  var cepInput = $('#cep');
+  var lastCep = '';
+  cepInput.addEventListener('input', function() {
+    var cep = digits(cepInput.value);
+    if (cep.length !== 8 || cep === lastCep) { return; }
+    lastCep = cep;
+    $('#lookup').hidden = false;
+    setTimeout(function() {
+      $('#lookup').hidden = true;
+      var address = cep[0] === '0' ?
+          {street: 'Avenida Paulista', district: 'Bela Vista', city: 'São Paulo', uf: 'SP'} :
+          {street: 'Avenida Historiador Rubens de Mendonça', district: 'Bosque da Saúde', city: 'Cuiabá', uf: 'MT'};
+      Object.keys(address).forEach(function(id) { setValue(id, address[id]); });
+      $('#number').focus();
+    }, 800);
+  });
+  $('#no-number').addEventListener('change', function() {
+    var number = $('#number');
+    number.disabled = this.checked;
+    if (this.checked) { number.value = ''; setFieldError(number, ''); }
+    number.closest('.mdl-textfield').MaterialTextfield.checkDisabled();
+    number.closest('.mdl-textfield').MaterialTextfield.checkDirty();
+  });
+
+  // ---------- Documents (simulated camera) ----------
+  $$('input[name="doc"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      $$('.capture[data-doc]').forEach(function(c) { c.hidden = c.getAttribute('data-doc') !== radio.value; });
+    });
+  });
+  $$('.capture').forEach(function(tile) {
+    tile.addEventListener('click', function() {
+      if (tile.classList.contains('is-loading')) { return; }
+      var key = tile.getAttribute('data-capture');
+      var status = $('.capture__status', tile);
+      tile.classList.remove('is-done');
+      tile.classList.add('is-loading');
+      status.textContent = 'Enviando foto…';
+      captures[key] = false;
+      setTimeout(function() {
+        tile.classList.remove('is-loading');
+        tile.classList.add('is-done');
+        status.textContent = 'Foto enviada · toque para refazer';
+        $('.capture__icon .material-icons', tile).textContent = 'check_circle';
+        $('.capture__action', tile).textContent = 'replay';
+        captures[key] = true;
+      }, 1100);
+    });
+  });
+
+  // ---------- Password ----------
+  function passwordRules(v) {
+    return {length: v.length >= 8, mix: /[A-Za-z]/.test(v) && /\d/.test(v), symbol: /[^A-Za-z0-9]/.test(v)};
+  }
+  $('#pw').addEventListener('input', function() {
+    var r = passwordRules(this.value);
+    $$('#rules li').forEach(function(li) {
+      var ok = r[li.getAttribute('data-rule')];
+      li.classList.toggle('is-ok', ok);
+      $('.material-icons', li).textContent = ok ? 'check_circle' : 'radio_button_unchecked';
+    });
+  });
+  $$('[data-toggle]').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var input = document.getElementById(button.getAttribute('data-toggle'));
+      var showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      $('.material-icons', button).textContent = showing ? 'visibility' : 'visibility_off';
+      button.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+    });
+  });
+
+  // ---------- Review ----------
+  function fillReview() {
+    var cpf = $('#cpf').value;
+    var number = $('#no-number').checked ? 's/n' : $('#number').value.trim();
+    var complement = $('#complement').value.trim();
+    var values = {
+      name: $('#name').value.trim(),
+      cpf: '***.' + cpf.slice(4, 11) + '-**',
+      birth: $('#birth').value,
+      email: $('#email').value.trim(),
+      phone: $('#phone').value,
+      address: $('#street').value.trim() + ', ' + number + (complement ? ' · ' + complement : '') + ' · ' +
+          $('#district').value.trim() + ' · ' + $('#city').value.trim() + '/' + $('#uf').value.trim().toUpperCase(),
+      cep: $('#cep').value
+    };
+    $$('[data-review]').forEach(function(dd) { dd.textContent = values[dd.getAttribute('data-review')]; });
+  }
+  $$('[data-edit]').forEach(function(button) {
+    button.addEventListener('click', function() {
+      returnToReview = true;
+      show(button.getAttribute('data-edit'), 'back');
+    });
+  });
+  $('#terms').addEventListener('change', function() { if (this.checked) { $('#terms-error').textContent = ''; } });
+
+  var termsDialog = $('#terms-dialog');
+  $('[data-action="terms"]').addEventListener('click', function(e) { e.preventDefault(); termsDialog.showModal(); });
+  $('[data-action="close-terms"]').addEventListener('click', function() { termsDialog.close(); });
+  $('[data-action="accept-terms"]').addEventListener('click', function() {
+    termsDialog.close();
+    var checkbox = $('#terms').closest('.mdl-checkbox');
+    if (!$('#terms').checked) { checkbox.MaterialCheckbox.check(); }
+    $('#terms-error').textContent = '';
+  });
+
+  // ---------- Welcome and restart ----------
+  $('[data-action="start"]').addEventListener('click', function() { show('personal'); });
+  $('[data-action="login"]').addEventListener('click', function() { toast('O login não faz parte deste protótipo.'); });
+  $('[data-action="restart"]').addEventListener('click', function() {
+    $$('form[data-form]').forEach(function(form) { form.reset(); });
+    $$('.mdl-textfield').forEach(function(f) {
+      if (!f.MaterialTextfield) { return; }
+      var input = $('input', f);
+      setFieldError(input, '');
+      f.MaterialTextfield.checkDirty();
+    });
+    $$('.mdl-js-checkbox, .mdl-js-switch, .mdl-js-radio').forEach(function(el) {
+      var api = el.MaterialCheckbox || el.MaterialSwitch || el.MaterialRadio;
+      if (api && api.checkToggleState) { api.checkToggleState(); }
+      if (api && api.updateClasses_) { api.updateClasses_(); }
+    });
+    $$('.capture').forEach(function(tile) {
+      tile.classList.remove('is-done', 'is-loading');
+      $('.capture__status', tile).textContent = 'Toque para tirar a foto';
+      $('.capture__action', tile).textContent = 'photo_camera';
+      var key = tile.getAttribute('data-capture');
+      $('.capture__icon .material-icons', tile).textContent = key === 'selfie' ? 'face' : key === 'rg-back' ? 'flip' : 'badge';
+    });
+    $$('.capture[data-doc]').forEach(function(c) { c.hidden = c.getAttribute('data-doc') !== 'cnh'; });
+    $('#pw').dispatchEvent(new Event('input'));
+    captures = {};
+    lastCep = '';
+    returnToReview = false;
+    $('#number').disabled = false;
+    show('welcome', 'back');
+  });
+
+  window.addEventListener('load', function() {
+    snackbar = $('#snackbar').MaterialSnackbar;
+    $('#t-welcome').focus({preventScroll: true});
+  });
+}());
+</script>
+</body>
+</html>
