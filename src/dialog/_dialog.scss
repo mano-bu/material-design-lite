@@ -21,6 +21,7 @@
     border: none;
     border-radius: $dialog-border-radius;
     background: $dialog-background-color;
+    --mdl-textfield-label-background: #{$dialog-background-color};
     color: $dialog-title-color;
     padding: 0;
     @include shadow-6dp;

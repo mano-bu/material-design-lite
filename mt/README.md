@@ -56,6 +56,14 @@ As classes do MDL usam os mesmos tokens:
 | `subhead-2`, `body-1`, `caption` | body large, medium, small |
 | `menu`, `button` | label large (o botão usa peso 500, como `m2/button`) |
 
+## Campos de texto
+
+O padrão é a variante outlined. A label flutuante fica sobre a borda e usa a cor de fundo da página (`--mt-surface`) para "cortar" a linha. Cards e diálogos já ajustam isso sozinhos. Em outro fundo, defina no container:
+
+```css
+.meu-painel { --mdl-textfield-label-background: var(--mt-surface-container-low); }
+```
+
 ## Outros tokens
 
 | Figma | MDL |
@@ -65,6 +73,7 @@ As classes do MDL usam os mesmos tokens:
 | Effects: Blur 1–4 | `--mt-blur-1` a `--mt-blur-4` (12, 25, 50, 100px), para `backdrop-filter: blur(var(--mt-blur-2))` |
 | Grids | `.mdl-grid`: 4 colunas até 599px (gutter 8, margem 16), 12 de 600 a 839px (gutter 12, margem 12), 12 a partir de 840px (gutter 24, margem 32) |
 | Common Buttons: Filled, Tonal, Elevated, Outlined, Text | `--raised --colored`, `--tonal`, `--raised`, `--outlined`, padrão |
-| Text Field / Filled | `.mdl-textfield` com fundo, cantos superiores de 8px e linha inferior |
+| Text Field / Outlined (padrão) | `.mdl-textfield`: contorno de 1px, cantos de 8px, contorno `primary` de 2px no foco e label flutuando sobre a borda |
+| Text Field / Filled | `.mdl-textfield--filled`: fundo `surface-container`, cantos superiores de 8px e linha inferior |
 | Switch 52×32 | `.mdl-switch` com thumb de 16px (desligado) e 24px (ligado) |
 | Filter / Input Chip | `.mdl-chip` com contorno e `.is-selected` |
