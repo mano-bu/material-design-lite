@@ -36,7 +36,11 @@
   overflow: visible;
 
   &.is-upgraded {
-    padding-left: $switch-track-length - 8px;
+    padding-left: $switch-track-length + 16px;
+  }
+
+  &.is-disabled {
+    opacity: 0.38;
   }
 
   // avoids blue box around switch
@@ -91,24 +95,23 @@
 .mdl-switch__thumb {
   background: $switch-off-thumb-color;
   position: absolute;
-  left: 0;
-  top: $switch-thumb-top;
-  height: $switch-thumb-size;
-  width: $switch-thumb-size;
+  left: $switch-off-thumb-left;
+  top: $switch-off-thumb-top;
+  height: $switch-off-thumb-size;
+  width: $switch-off-thumb-size;
   border-radius: 50%;
 
   cursor: pointer;
 
-  @include shadow-2dp();
-
   @include material-animation-default(0.28s);
-  transition-property: left;
+  transition-property: left, top, width, height;
 
   .mdl-switch.is-checked & {
     background: $switch-thumb-color;
-    left: $switch-track-length - $switch-thumb-size;
-
-    @include shadow-3dp();
+    left: $switch-on-thumb-left;
+    top: $switch-thumb-top;
+    height: $switch-thumb-size;
+    width: $switch-thumb-size;
   }
 
   fieldset[disabled] .mdl-switch,
@@ -136,8 +139,8 @@
 
   .mdl-switch.is-focused & {
     box-shadow: 0 0 0px (($switch-ripple-size - $switch-helper-size) / 2)
-        rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.1);
+        $switch-off-focus-color;
+    background-color: $switch-off-focus-color;
   }
 
   .mdl-switch.is-focused.is-checked & {
@@ -153,7 +156,6 @@
   font-size: $switch-label-font-size;
   line-height: $switch-label-height;
   margin: 0;
-  left: 24px;
 
   fieldset[disabled] .mdl-switch,
   .mdl-switch.is-disabled & {
@@ -166,7 +168,8 @@
   position: absolute;
   z-index: 2;
   top: -($switch-ripple-size - $switch-label-height) / 2;
-  left: $switch-thumb-size / 2 - $switch-ripple-size / 2;
+  left: $switch-off-thumb-left + $switch-off-thumb-size / 2 -
+      $switch-ripple-size / 2;
 
   box-sizing: border-box;
   width: $switch-ripple-size;
@@ -197,7 +200,7 @@
   }
 
   .mdl-switch.is-checked & {
-    left: $switch-track-length - $switch-ripple-size / 2 -
-        $switch-thumb-size / 2;
+    left: $switch-on-thumb-left + $switch-thumb-size / 2 -
+        $switch-ripple-size / 2;
   }
 }

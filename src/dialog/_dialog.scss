@@ -19,22 +19,32 @@
 
 .mdl-dialog {
     border: none;
-    @include shadow-24dp;
+    border-radius: $dialog-border-radius;
+    background: $dialog-background-color;
+    color: $dialog-title-color;
+    padding: 0;
+    @include shadow-6dp;
     @include dialog-width;
+
+    &::backdrop {
+        background: var(--mt-scrim);
+    }
 
     &__title {
         padding: 24px 24px 0;
         margin: 0;
-        font-size: 2.5rem;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
     }
     &__actions {
-        padding: 8px 8px 8px 24px;
+        padding: 16px 24px 24px;
         display: flex;
         flex-direction: row-reverse;
         flex-wrap: wrap;
         > * {
             margin-right: 8px;
-            height: 36px;
+            height: $button-height;
             &:first-child {
                 margin-right: 0;
             }
@@ -52,7 +62,10 @@
         }
     }
     &__content {
-        padding: 20px 24px 24px 24px;
+        padding: 16px 24px 0;
         color: $dialog-content-color;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.25px;
     }
 }

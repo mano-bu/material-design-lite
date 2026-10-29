@@ -98,7 +98,8 @@
   }
 
   mark {
-    background-color: #f4ff81;
+    background-color: var(--mt-warning-container);
+    color: var(--mt-on-warning-container);
   }
 
   dt {

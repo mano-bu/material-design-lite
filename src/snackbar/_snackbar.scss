@@ -32,6 +32,7 @@
   transform: translate(0, 80px);
   transition: transform 0.25s $animation-curve-fast-out-linear-in;
   pointer-events: none;
+  @include shadow-4dp();
   @media(max-width: $snackbar-tablet-breakpoint - 1) {
     width: 100%;
     left: 0;
@@ -41,7 +42,7 @@
   @media(min-width: $snackbar-tablet-breakpoint) {
     min-width: 288px;
     max-width: 568px;
-    border-radius: 2px;
+    border-radius: $snackbar-border-radius;
     transform: translate(-50%, 80px);
   }
   &--active {
@@ -55,9 +56,13 @@
   }
 
   &__text {
-    padding: 14px 12px 14px 24px;
+    padding: 14px 12px 14px 16px;
     vertical-align: middle;
-    color: white;
+    color: $snackbar-text-color;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
     float: left;
   }
 
@@ -66,8 +71,9 @@
     border: none;
     color: $snackbar-action-color;
     float: right;
-    text-transform: uppercase;
-    padding: 14px 24px 14px 12px;
+    border-radius: 999px;
+    margin-right: 8px;
+    padding: 10px 12px;
     @include typo-button();
     overflow: hidden;
     outline: none;

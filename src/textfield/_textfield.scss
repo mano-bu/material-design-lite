@@ -57,19 +57,33 @@
   }
 }
 
-// Styling for the input element.
+// Styling for the input element (Figma "Text Field / Filled": 56px tall,
+// surface-container fill, 8px top corners and a bottom line).
 .mdl-textfield__input {
   border: none;
   border-bottom: 1px solid $input-text-bottom-border-color;
+  border-radius: $input-text-border-radius $input-text-border-radius 0 0;
+  box-sizing: border-box;
   display: block;
   font-size: $input-text-font-size;
   font-family: $performance_font;
+  line-height: $input-text-line-height;
   margin: 0;
-  padding: $input-text-padding 0;
+  padding: $input-text-padding $input-text-horizontal-padding;
   width: $input-text-width;
-  background: none;
+  background: $input-text-background-color;
   text-align: left;
   color: inherit;
+  transition: background-color 0.2s $animation-curve-default;
+
+  &:hover {
+    background-color: $input-text-hover-background-color;
+  }
+
+  .mdl-textfield--floating-label & {
+    padding-top: $input-text-floating-padding-top;
+    padding-bottom: $input-text-floating-padding-bottom;
+  }
 
   &[type="number"] {
     -moz-appearance: textfield;
@@ -92,8 +106,8 @@
 
   fieldset[disabled] .mdl-textfield &,
   .mdl-textfield.is-disabled & {
-    background-color: transparent;
-    border-bottom: 1px dotted $input-text-disabled-color;
+    background-color: $input-text-disabled-background-color;
+    border-bottom: 1px solid $input-text-disabled-color;
     color: $input-text-disabled-text-color;
   }
 }
@@ -107,11 +121,14 @@
   bottom: 0;
   color: $input-text-label-color;
   font-size: $input-text-font-size;
+  line-height: $input-text-line-height;
   left: 0;
   right: 0;
   pointer-events: none;
   position: absolute;
   display: block;
+  box-sizing: border-box;
+  padding: 0 $input-text-horizontal-padding;
   top: ($input-text-padding + $input-text-vertical-spacing);
   width: 100%;
   overflow: hidden;
@@ -140,9 +157,10 @@
   .mdl-textfield--floating-label.is-focused &,
   .mdl-textfield--floating-label.is-dirty &,
   .mdl-textfield--floating-label.has-placeholder & {
-    color: $input-text-highlight-color;
+    color: $input-text-label-color;
     font-size : $input-text-floating-label-fontsize;
-    top: $input-text-vertical-spacing - ($input-text-floating-label-fontsize + $input-text-padding);
+    line-height: $input-text-floating-label-line-height;
+    top: $input-text-vertical-spacing + $input-text-floating-label-top;
     visibility: visible;
   }
 
@@ -181,12 +199,19 @@
   }
 }
 
-// TextField Error.
+// Focused floating label uses the highlight color.
+.mdl-textfield--floating-label.is-focused .mdl-textfield__label {
+  color: $input-text-highlight-color;
+}
+
+// TextField Error (Figma "Helper / Error": 12/16, 16px inset).
 .mdl-textfield__error {
   color: $input-text-error-color;
   position: absolute;
   font-size: $input-text-floating-label-fontsize;
-  margin-top: 3px;
+  line-height: $input-text-floating-label-line-height;
+  margin-top: 4px;
+  padding: 0 $input-text-horizontal-padding;
   visibility: hidden;
   display: block;
 

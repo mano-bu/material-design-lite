@@ -18,7 +18,7 @@
 @import "../mixins";
 
 .mdl-expansion {
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  border-bottom: 1px solid var(--mt-outline-variant);
   box-sizing: border-box;
 
   &__summary {
@@ -42,13 +42,13 @@
       justify-content: center;
       transition: transform 200ms, color 200ms;
       margin-left: auto;
-      color: rgba(0, 0, 0, .38);
+      color: rgba(var(--mt-on-surface-rgb), 0.38);
     }
 
     &:focus {
       background-color: unquote("rgba(#{$palette-grey-200}, 1)");
       &::after {
-        color: rgba(0, 0, 0, .54);
+        color: var(--mt-on-surface-variant);
       }
     }
   }
@@ -65,7 +65,7 @@
 
   &__subheader {
     font-size: .75rem;
-    color: rgba(0, 0, 0, .54);
+    color: var(--mt-on-surface-variant);
   }
 
   &__secondary-header {
@@ -75,7 +75,7 @@
     font-size: 0.9375rem;
     font-weight: 500;
     flex-basis: 30%;
-    color: rgba(0, 0, 0, .87);
+    color: var(--mt-on-surface);
     margin-right: 16px;
   }
 
@@ -86,7 +86,7 @@
     padding-top: 16px;
     padding-bottom: 16px;
     &+.mdl-expansion__actions {
-      border-top: 1px solid rgba(0, 0, 0, .12);
+      border-top: 1px solid var(--mt-outline-variant);
     }
   }
 

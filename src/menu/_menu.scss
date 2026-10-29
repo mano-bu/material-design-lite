@@ -42,7 +42,7 @@
   margin: 0;
   padding: 0;
   border: none;
-  border-radius: 2px;
+  border-radius: $menu-border-radius;
   position: absolute;
   top: 0;
   left: 0;
@@ -50,7 +50,7 @@
   opacity: 0;
   transform: scale(0);
   transform-origin: 0 0;
-  @include shadow-2dp();
+  @include shadow-3dp();
   will-change: transform;
   transition: transform $menu-expand-duration $animation-curve-default,
       opacity $menu-fade-duration $animation-curve-default;
@@ -129,7 +129,7 @@
   background-color: transparent;
   text-align: left;
   margin: 0;
-  padding: 0 16px;
+  padding: 0 12px;
   outline-color: $default-item-outline-color;
   position: relative;
   overflow: hidden;

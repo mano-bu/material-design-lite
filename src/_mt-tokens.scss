@@ -1,0 +1,508 @@
+/**
+ * MT Pagamentos design tokens.
+ *
+ * Generated from the Figma library "ds_mt-pagamentos" (variable collections
+ * Theme, Shape and Typeface, plus the Elevation and text styles). Every color
+ * is exposed twice: as a ready-to-use value (--mt-primary) and as an RGB
+ * triplet (--mt-primary-rgb) so MDL can keep composing rgb()/rgba() strings.
+ *
+ * Themes: varejo-light (default), varejo-dark, ativos-light, ativos-dark.
+ * Switch at runtime with <html data-mt-theme="varejo-dark">.
+ */
+
+/* ==========  Shape, type and elevation (shared by all themes)  ========== */
+
+:root {
+  --mt-shape-none: 0;
+  --mt-shape-extra-small: 4px;
+  --mt-shape-small: 8px;
+  --mt-shape-medium: 12px;
+  --mt-shape-large: 16px;
+  --mt-shape-extra-large: 28px;
+  --mt-shape-full: 999px;
+
+  --mt-font-brand: 'Readex Pro', 'Helvetica', 'Arial', sans-serif;
+  --mt-font-plain: 'Readex Pro', 'Helvetica', 'Arial', sans-serif;
+
+  --mt-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --mt-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --mt-elevation-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --mt-elevation-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --mt-elevation-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3), 0 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+  --mt-state-hover-opacity: 0.08;
+  --mt-state-focus-opacity: 0.12;
+  --mt-state-pressed-opacity: 0.12;
+  --mt-state-disabled-opacity: 0.38;
+}
+
+/* ==========  Color themes  ========== */
+
+// varejo light
+:root,
+[data-mt-theme="varejo-light"] {
+  --mt-inverse-primary: #ce3b62;
+  --mt-inverse-primary-rgb: 206, 59, 98;
+  --mt-on-primary: #ffffff;
+  --mt-on-primary-rgb: 255, 255, 255;
+  --mt-on-primary-container: #ffffff;
+  --mt-on-primary-container-rgb: 255, 255, 255;
+  --mt-primary: #b22d50;
+  --mt-primary-rgb: 178, 45, 80;
+  --mt-primary-container: #b22d50;
+  --mt-primary-container-rgb: 178, 45, 80;
+  --mt-primary-container-hover: #8b233e;
+  --mt-primary-container-hover-rgb: 139, 35, 62;
+  --mt-primary-hover: #8b233e;
+  --mt-primary-hover-rgb: 139, 35, 62;
+
+  --mt-on-secondary: #a82b4c;
+  --mt-on-secondary-rgb: 168, 43, 76;
+  --mt-on-secondary-container: #a82b4c;
+  --mt-on-secondary-container-rgb: 168, 43, 76;
+  --mt-secondary: #f9e6eb;
+  --mt-secondary-rgb: 249, 230, 235;
+  --mt-secondary-container: #f9e6eb;
+  --mt-secondary-container-rgb: 249, 230, 235;
+  --mt-secondary-container-hover: rgba(236, 181, 195, 0.8);
+  --mt-secondary-container-hover-rgb: 236, 181, 195;
+  --mt-secondary-hover: rgba(236, 181, 195, 0.8);
+  --mt-secondary-hover-rgb: 236, 181, 195;
+
+  --mt-on-tertiary: #4a1220;
+  --mt-on-tertiary-rgb: 74, 18, 32;
+  --mt-on-tertiary-container: #4a1220;
+  --mt-on-tertiary-container-rgb: 74, 18, 32;
+  --mt-tertiary: #f9e4e9;
+  --mt-tertiary-rgb: 249, 228, 233;
+  --mt-tertiary-container: #f9e4e9;
+  --mt-tertiary-container-rgb: 249, 228, 233;
+  --mt-tertiary-container-hover: #f2cdd6;
+  --mt-tertiary-container-hover-rgb: 242, 205, 214;
+  --mt-tertiary-hover: #f2cdd6;
+  --mt-tertiary-hover-rgb: 242, 205, 214;
+
+  --mt-error: #de350b;
+  --mt-error-rgb: 222, 53, 11;
+  --mt-error-container: #b22a08;
+  --mt-error-container-rgb: 178, 42, 8;
+  --mt-on-error: #ffffff;
+  --mt-on-error-rgb: 255, 255, 255;
+  --mt-on-error-container: #fbd5ca;
+  --mt-on-error-container-rgb: 251, 213, 202;
+
+  --mt-on-success: #ffffff;
+  --mt-on-success-rgb: 255, 255, 255;
+  --mt-on-success-container: #d5f1de;
+  --mt-on-success-container-rgb: 213, 241, 222;
+  --mt-success: #35a158;
+  --mt-success-rgb: 53, 161, 88;
+  --mt-success-container: #2c8649;
+  --mt-success-container-rgb: 44, 134, 73;
+
+  --mt-on-warning: #212121;
+  --mt-on-warning-rgb: 33, 33, 33;
+  --mt-on-warning-container: #ffedc7;
+  --mt-on-warning-container-rgb: 255, 237, 199;
+  --mt-warning: #d69000;
+  --mt-warning-rgb: 214, 144, 0;
+  --mt-warning-container: #b27800;
+  --mt-warning-container-rgb: 178, 120, 0;
+
+  --mt-info: #00b8d9;
+  --mt-info-rgb: 0, 184, 217;
+  --mt-info-container: #0097b2;
+  --mt-info-container-rgb: 0, 151, 178;
+  --mt-on-info: #ffffff;
+  --mt-on-info-rgb: 255, 255, 255;
+  --mt-on-info-container: #c7f6ff;
+  --mt-on-info-container-rgb: 199, 246, 255;
+
+  --mt-inverse-on-surface: #f5f5f5;
+  --mt-inverse-on-surface-rgb: 245, 245, 245;
+  --mt-inverse-surface: #212121;
+  --mt-inverse-surface-rgb: 33, 33, 33;
+  --mt-on-surface: #212121;
+  --mt-on-surface-rgb: 33, 33, 33;
+  --mt-on-surface-variant: #717272;
+  --mt-on-surface-variant-rgb: 113, 114, 114;
+  --mt-surface: #ffffff;
+  --mt-surface-rgb: 255, 255, 255;
+  --mt-surface-container: #f0f0f0;
+  --mt-surface-container-rgb: 240, 240, 240;
+  --mt-surface-container-high: #e6e6e6;
+  --mt-surface-container-high-rgb: 230, 230, 230;
+  --mt-surface-container-highest: #d1d1d1;
+  --mt-surface-container-highest-rgb: 209, 209, 209;
+  --mt-surface-container-low: #f5f5f5;
+  --mt-surface-container-low-rgb: 245, 245, 245;
+  --mt-surface-container-lowest: #fafafa;
+  --mt-surface-container-lowest-rgb: 250, 250, 250;
+  --mt-surface-variant: #fafafa;
+  --mt-surface-variant-rgb: 250, 250, 250;
+
+  --mt-surface-bright: #ffffff;
+  --mt-surface-bright-rgb: 255, 255, 255;
+  --mt-surface-dim: #e6e6e6;
+  --mt-surface-dim-rgb: 230, 230, 230;
+
+  --mt-outline: #d1d1d1;
+  --mt-outline-rgb: 209, 209, 209;
+  --mt-outline-variant: #e6e6e6;
+  --mt-outline-variant-rgb: 230, 230, 230;
+
+  --mt-scrim: rgba(33, 33, 33, 0.3);
+  --mt-scrim-rgb: 33, 33, 33;
+}
+
+// varejo dark
+[data-mt-theme="varejo-dark"] {
+  --mt-inverse-primary: #ce3b62;
+  --mt-inverse-primary-rgb: 206, 59, 98;
+  --mt-on-primary: #5e172a;
+  --mt-on-primary-rgb: 94, 23, 42;
+  --mt-on-primary-container: #5e172a;
+  --mt-on-primary-container-rgb: 94, 23, 42;
+  --mt-primary: #f0c2ce;
+  --mt-primary-rgb: 240, 194, 206;
+  --mt-primary-container: #f0c2ce;
+  --mt-primary-container-rgb: 240, 194, 206;
+  --mt-primary-container-hover: #e79db1;
+  --mt-primary-container-hover-rgb: 231, 157, 177;
+  --mt-primary-hover: #e79db1;
+  --mt-primary-hover-rgb: 231, 157, 177;
+
+  --mt-on-secondary: #f0c2ce;
+  --mt-on-secondary-rgb: 240, 194, 206;
+  --mt-on-secondary-container: #f0c2ce;
+  --mt-on-secondary-container-rgb: 240, 194, 206;
+  --mt-secondary: rgba(240, 194, 206, 0.2);
+  --mt-secondary-rgb: 240, 194, 206;
+  --mt-secondary-container: rgba(240, 194, 206, 0.2);
+  --mt-secondary-container-rgb: 240, 194, 206;
+  --mt-secondary-container-hover: rgba(231, 158, 177, 0.24);
+  --mt-secondary-container-hover-rgb: 231, 158, 177;
+  --mt-secondary-hover: rgba(231, 158, 177, 0.24);
+  --mt-secondary-hover-rgb: 231, 158, 177;
+
+  --mt-on-tertiary: #f9e4e9;
+  --mt-on-tertiary-rgb: 249, 228, 233;
+  --mt-on-tertiary-container: #f9e4e9;
+  --mt-on-tertiary-container-rgb: 249, 228, 233;
+  --mt-tertiary: #7a1f38;
+  --mt-tertiary-rgb: 122, 31, 56;
+  --mt-tertiary-container: #7a1f38;
+  --mt-tertiary-container-rgb: 122, 31, 56;
+  --mt-tertiary-container-hover: #94263f;
+  --mt-tertiary-container-hover-rgb: 148, 38, 63;
+  --mt-tertiary-hover: #94263f;
+  --mt-tertiary-hover-rgb: 148, 38, 63;
+
+  --mt-error: #f5876a;
+  --mt-error-rgb: 245, 135, 106;
+  --mt-error-container: #b22a08;
+  --mt-error-container-rgb: 178, 42, 8;
+  --mt-on-error: #4a1203;
+  --mt-on-error-rgb: 74, 18, 3;
+  --mt-on-error-container: #fbd5ca;
+  --mt-on-error-container-rgb: 251, 213, 202;
+
+  --mt-on-success: #133a1f;
+  --mt-on-success-rgb: 19, 58, 31;
+  --mt-on-success-container: #d5f1de;
+  --mt-on-success-container-rgb: 213, 241, 222;
+  --mt-success: #90daa8;
+  --mt-success-rgb: 144, 218, 168;
+  --mt-success-container: #2c8649;
+  --mt-success-container-rgb: 44, 134, 73;
+
+  --mt-on-warning: #4c3300;
+  --mt-on-warning-rgb: 76, 51, 0;
+  --mt-on-warning-container: #ffedc7;
+  --mt-on-warning-container-rgb: 255, 237, 199;
+  --mt-warning: #ffce6b;
+  --mt-warning-rgb: 255, 206, 107;
+  --mt-warning-container: #b27800;
+  --mt-warning-container-rgb: 178, 120, 0;
+
+  --mt-info: #6be9ff;
+  --mt-info-rgb: 107, 233, 255;
+  --mt-info-container: #0097b2;
+  --mt-info-container-rgb: 0, 151, 178;
+  --mt-on-info: #ffffff;
+  --mt-on-info-rgb: 255, 255, 255;
+  --mt-on-info-container: #c7f6ff;
+  --mt-on-info-container-rgb: 199, 246, 255;
+
+  --mt-inverse-on-surface: #212121;
+  --mt-inverse-on-surface-rgb: 33, 33, 33;
+  --mt-inverse-surface: #fafafa;
+  --mt-inverse-surface-rgb: 250, 250, 250;
+  --mt-on-surface: #ffffff;
+  --mt-on-surface-rgb: 255, 255, 255;
+  --mt-on-surface-variant: #d1d1d1;
+  --mt-on-surface-variant-rgb: 209, 209, 209;
+  --mt-surface: #212121;
+  --mt-surface-rgb: 33, 33, 33;
+  --mt-surface-container: #2e2e2e;
+  --mt-surface-container-rgb: 46, 46, 46;
+  --mt-surface-container-high: #383838;
+  --mt-surface-container-high-rgb: 56, 56, 56;
+  --mt-surface-container-highest: #424242;
+  --mt-surface-container-highest-rgb: 66, 66, 66;
+  --mt-surface-container-low: #262626;
+  --mt-surface-container-low-rgb: 38, 38, 38;
+  --mt-surface-container-lowest: #1a1a1a;
+  --mt-surface-container-lowest-rgb: 26, 26, 26;
+  --mt-surface-variant: #1a1a1a;
+  --mt-surface-variant-rgb: 26, 26, 26;
+
+  --mt-surface-bright: #383838;
+  --mt-surface-bright-rgb: 56, 56, 56;
+  --mt-surface-dim: #1a1a1a;
+  --mt-surface-dim-rgb: 26, 26, 26;
+
+  --mt-outline: #3f3f3f;
+  --mt-outline-rgb: 63, 63, 63;
+  --mt-outline-variant: #2e2e2e;
+  --mt-outline-variant-rgb: 46, 46, 46;
+
+  --mt-scrim: rgba(33, 33, 33, 0.7);
+  --mt-scrim-rgb: 33, 33, 33;
+}
+
+// ativos light
+[data-mt-theme="ativos-light"] {
+  --mt-inverse-primary: #00e0a8;
+  --mt-inverse-primary-rgb: 0, 224, 168;
+  --mt-on-primary: #ffffff;
+  --mt-on-primary-rgb: 255, 255, 255;
+  --mt-on-primary-container: #ffffff;
+  --mt-on-primary-container-rgb: 255, 255, 255;
+  --mt-primary: #00d29d;
+  --mt-primary-rgb: 0, 210, 157;
+  --mt-primary-container: #00d29d;
+  --mt-primary-container-rgb: 0, 210, 157;
+  --mt-primary-container-hover: #00ad82;
+  --mt-primary-container-hover-rgb: 0, 173, 130;
+  --mt-primary-hover: #00ad82;
+  --mt-primary-hover-rgb: 0, 173, 130;
+
+  --mt-on-secondary: #00d39e;
+  --mt-on-secondary-rgb: 0, 211, 158;
+  --mt-on-secondary-container: #00d39e;
+  --mt-on-secondary-container-rgb: 0, 211, 158;
+  --mt-secondary: #e0fff7;
+  --mt-secondary-rgb: 224, 255, 247;
+  --mt-secondary-container: #e0fff7;
+  --mt-secondary-container-rgb: 224, 255, 247;
+  --mt-secondary-container-hover: rgba(162, 255, 232, 0.8);
+  --mt-secondary-container-hover-rgb: 162, 255, 232;
+  --mt-secondary-hover: rgba(162, 255, 232, 0.8);
+  --mt-secondary-hover-rgb: 162, 255, 232;
+
+  --mt-on-tertiary: #043b41;
+  --mt-on-tertiary-rgb: 4, 59, 65;
+  --mt-on-tertiary-container: #043b41;
+  --mt-on-tertiary-container-rgb: 4, 59, 65;
+  --mt-tertiary: #d6f7fa;
+  --mt-tertiary-rgb: 214, 247, 250;
+  --mt-tertiary-container: #d6f7fa;
+  --mt-tertiary-container-rgb: 214, 247, 250;
+  --mt-tertiary-container-hover: #bdf0f6;
+  --mt-tertiary-container-hover-rgb: 189, 240, 246;
+  --mt-tertiary-hover: #bdf0f6;
+  --mt-tertiary-hover-rgb: 189, 240, 246;
+
+  --mt-error: #de350b;
+  --mt-error-rgb: 222, 53, 11;
+  --mt-error-container: #b22a08;
+  --mt-error-container-rgb: 178, 42, 8;
+  --mt-on-error: #ffffff;
+  --mt-on-error-rgb: 255, 255, 255;
+  --mt-on-error-container: #fbd5ca;
+  --mt-on-error-container-rgb: 251, 213, 202;
+
+  --mt-on-success: #ffffff;
+  --mt-on-success-rgb: 255, 255, 255;
+  --mt-on-success-container: #d5f1de;
+  --mt-on-success-container-rgb: 213, 241, 222;
+  --mt-success: #35a158;
+  --mt-success-rgb: 53, 161, 88;
+  --mt-success-container: #2c8649;
+  --mt-success-container-rgb: 44, 134, 73;
+
+  --mt-on-warning: #212121;
+  --mt-on-warning-rgb: 33, 33, 33;
+  --mt-on-warning-container: #ffedc7;
+  --mt-on-warning-container-rgb: 255, 237, 199;
+  --mt-warning: #d69000;
+  --mt-warning-rgb: 214, 144, 0;
+  --mt-warning-container: #b27800;
+  --mt-warning-container-rgb: 178, 120, 0;
+
+  --mt-info: #00b8d9;
+  --mt-info-rgb: 0, 184, 217;
+  --mt-info-container: #0097b2;
+  --mt-info-container-rgb: 0, 151, 178;
+  --mt-on-info: #ffffff;
+  --mt-on-info-rgb: 255, 255, 255;
+  --mt-on-info-container: #c7f6ff;
+  --mt-on-info-container-rgb: 199, 246, 255;
+
+  --mt-inverse-on-surface: #f5f5f5;
+  --mt-inverse-on-surface-rgb: 245, 245, 245;
+  --mt-inverse-surface: #212121;
+  --mt-inverse-surface-rgb: 33, 33, 33;
+  --mt-on-surface: #212121;
+  --mt-on-surface-rgb: 33, 33, 33;
+  --mt-on-surface-variant: #717272;
+  --mt-on-surface-variant-rgb: 113, 114, 114;
+  --mt-surface: #ffffff;
+  --mt-surface-rgb: 255, 255, 255;
+  --mt-surface-container: #f0f0f0;
+  --mt-surface-container-rgb: 240, 240, 240;
+  --mt-surface-container-high: #e6e6e6;
+  --mt-surface-container-high-rgb: 230, 230, 230;
+  --mt-surface-container-highest: #d1d1d1;
+  --mt-surface-container-highest-rgb: 209, 209, 209;
+  --mt-surface-container-low: #f5f5f5;
+  --mt-surface-container-low-rgb: 245, 245, 245;
+  --mt-surface-container-lowest: #fafafa;
+  --mt-surface-container-lowest-rgb: 250, 250, 250;
+  --mt-surface-variant: #fafafa;
+  --mt-surface-variant-rgb: 250, 250, 250;
+
+  --mt-surface-bright: #ffffff;
+  --mt-surface-bright-rgb: 255, 255, 255;
+  --mt-surface-dim: #e6e6e6;
+  --mt-surface-dim-rgb: 230, 230, 230;
+
+  --mt-outline: #d1d1d1;
+  --mt-outline-rgb: 209, 209, 209;
+  --mt-outline-variant: #e6e6e6;
+  --mt-outline-variant-rgb: 230, 230, 230;
+
+  --mt-scrim: rgba(33, 33, 33, 0.3);
+  --mt-scrim-rgb: 33, 33, 33;
+}
+
+// ativos dark
+[data-mt-theme="ativos-dark"] {
+  --mt-inverse-primary: #00e0a8;
+  --mt-inverse-primary-rgb: 0, 224, 168;
+  --mt-on-primary: #043b41;
+  --mt-on-primary-rgb: 4, 59, 65;
+  --mt-on-primary-container: #043b41;
+  --mt-on-primary-container-rgb: 4, 59, 65;
+  --mt-primary: #b2ffec;
+  --mt-primary-rgb: 178, 255, 236;
+  --mt-primary-container: #85ffe0;
+  --mt-primary-container-rgb: 133, 255, 224;
+  --mt-primary-container-hover: #00ad82;
+  --mt-primary-container-hover-rgb: 0, 173, 130;
+  --mt-primary-hover: #85ffe0;
+  --mt-primary-hover-rgb: 133, 255, 224;
+
+  --mt-on-secondary: #b3ffec;
+  --mt-on-secondary-rgb: 179, 255, 236;
+  --mt-on-secondary-container: #b3ffec;
+  --mt-on-secondary-container-rgb: 179, 255, 236;
+  --mt-secondary: rgba(179, 255, 236, 0.2);
+  --mt-secondary-rgb: 179, 255, 236;
+  --mt-secondary-container: rgba(179, 255, 236, 0.2);
+  --mt-secondary-container-rgb: 179, 255, 236;
+  --mt-secondary-container-hover: rgba(134, 255, 224, 0.24);
+  --mt-secondary-container-hover-rgb: 134, 255, 224;
+  --mt-secondary-hover: rgba(134, 255, 224, 0.24);
+  --mt-secondary-hover-rgb: 134, 255, 224;
+
+  --mt-on-tertiary: #d6f7fa;
+  --mt-on-tertiary-rgb: 214, 247, 250;
+  --mt-on-tertiary-container: #d6f7fa;
+  --mt-on-tertiary-container-rgb: 214, 247, 250;
+  --mt-tertiary: #0b6c77;
+  --mt-tertiary-rgb: 11, 108, 119;
+  --mt-tertiary-container: #0b6c77;
+  --mt-tertiary-container-rgb: 11, 108, 119;
+  --mt-tertiary-container-hover: #0e828f;
+  --mt-tertiary-container-hover-rgb: 14, 130, 143;
+  --mt-tertiary-hover: #0e828f;
+  --mt-tertiary-hover-rgb: 14, 130, 143;
+
+  --mt-error: #f5876a;
+  --mt-error-rgb: 245, 135, 106;
+  --mt-error-container: #b22a08;
+  --mt-error-container-rgb: 178, 42, 8;
+  --mt-on-error: #4a1203;
+  --mt-on-error-rgb: 74, 18, 3;
+  --mt-on-error-container: #fbd5ca;
+  --mt-on-error-container-rgb: 251, 213, 202;
+
+  --mt-on-success: #133a1f;
+  --mt-on-success-rgb: 19, 58, 31;
+  --mt-on-success-container: #d5f1de;
+  --mt-on-success-container-rgb: 213, 241, 222;
+  --mt-success: #90daa8;
+  --mt-success-rgb: 144, 218, 168;
+  --mt-success-container: #2c8649;
+  --mt-success-container-rgb: 44, 134, 73;
+
+  --mt-on-warning: #4c3300;
+  --mt-on-warning-rgb: 76, 51, 0;
+  --mt-on-warning-container: #ffedc7;
+  --mt-on-warning-container-rgb: 255, 237, 199;
+  --mt-warning: #ffce6b;
+  --mt-warning-rgb: 255, 206, 107;
+  --mt-warning-container: #b27800;
+  --mt-warning-container-rgb: 178, 120, 0;
+
+  --mt-info: #6be9ff;
+  --mt-info-rgb: 107, 233, 255;
+  --mt-info-container: #0097b2;
+  --mt-info-container-rgb: 0, 151, 178;
+  --mt-on-info: #ffffff;
+  --mt-on-info-rgb: 255, 255, 255;
+  --mt-on-info-container: #c7f6ff;
+  --mt-on-info-container-rgb: 199, 246, 255;
+
+  --mt-inverse-on-surface: #212121;
+  --mt-inverse-on-surface-rgb: 33, 33, 33;
+  --mt-inverse-surface: #fafafa;
+  --mt-inverse-surface-rgb: 250, 250, 250;
+  --mt-on-surface: #ffffff;
+  --mt-on-surface-rgb: 255, 255, 255;
+  --mt-on-surface-variant: #d1d1d1;
+  --mt-on-surface-variant-rgb: 209, 209, 209;
+  --mt-surface: #212121;
+  --mt-surface-rgb: 33, 33, 33;
+  --mt-surface-container: #2e2e2e;
+  --mt-surface-container-rgb: 46, 46, 46;
+  --mt-surface-container-high: #383838;
+  --mt-surface-container-high-rgb: 56, 56, 56;
+  --mt-surface-container-highest: #424242;
+  --mt-surface-container-highest-rgb: 66, 66, 66;
+  --mt-surface-container-low: #262626;
+  --mt-surface-container-low-rgb: 38, 38, 38;
+  --mt-surface-container-lowest: #1a1a1a;
+  --mt-surface-container-lowest-rgb: 26, 26, 26;
+  --mt-surface-variant: #1a1a1a;
+  --mt-surface-variant-rgb: 26, 26, 26;
+
+  --mt-surface-bright: #383838;
+  --mt-surface-bright-rgb: 56, 56, 56;
+  --mt-surface-dim: #1a1a1a;
+  --mt-surface-dim-rgb: 26, 26, 26;
+
+  --mt-outline: #3f3f3f;
+  --mt-outline-rgb: 63, 63, 63;
+  --mt-outline-variant: #2e2e2e;
+  --mt-outline-variant-rgb: 46, 46, 46;
+
+  --mt-scrim: rgba(33, 33, 33, 0.7);
+  --mt-scrim-rgb: 33, 33, 33;
+}
+[data-mt-theme="varejo-dark"],
+[data-mt-theme="ativos-dark"] {
+  color-scheme: dark;
+}

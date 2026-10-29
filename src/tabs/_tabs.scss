@@ -33,6 +33,7 @@
     padding         : 0 0 0 0;
     margin          : 0;
     border-bottom   : 1px solid $tab-border-color;
+    background      : $tab-bar-background-color;
 }
 
 .mdl-tabs__tab {
@@ -51,7 +52,7 @@
   text-align: center;
   font-weight: 500;
   font-size: $layout-tab-font-size;
-  text-transform: uppercase;
+  letter-spacing: 0.1px;
 
   color: $tab-text-color;
   overflow: hidden;
@@ -61,7 +62,8 @@
   }
 
   .mdl-tabs.is-upgraded &.is-active:after {
-    height: 2px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
     width: 100%;
     display: block;
     content: " ";
