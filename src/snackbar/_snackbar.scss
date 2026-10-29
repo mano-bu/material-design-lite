@@ -27,7 +27,7 @@
   display: block;
   display: flex;
   justify-content: space-between;
-  font-family: $preferred_font;
+  font-family: $performance_font;
   will-change: transform;
   transform: translate(0, 80px);
   transition: transform 0.25s $animation-curve-fast-out-linear-in;
@@ -59,10 +59,8 @@
     padding: 14px 12px 14px 16px;
     vertical-align: middle;
     color: $snackbar-text-color;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.1px;
+    font: var(--mt-type-body-medium);
+    letter-spacing: var(--mt-type-body-medium-tracking);
     float: left;
   }
 
