@@ -16,7 +16,9 @@
 
 /* Typography */
 
-// Sizes follow the Figma "Material typography" text styles (Readex Pro).
+// Each MDL style maps to a Figma "Material typography" style through the
+// generated --mt-type-* tokens (Outfit for display/title/label, Inter for body).
+// $usePreferred is kept for API compatibility; the token sets the family.
 
 @mixin typo-preferred-font($usePreferred: true) {
   @if $usePreferred {
@@ -25,11 +27,8 @@
 }
 
 @mixin typo-display-4($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 57px;
-  font-weight: 400;
-  line-height: 64px;
-  letter-spacing: -0.25px;
+  font: var(--mt-type-display-large);
+  letter-spacing: var(--mt-type-display-large-tracking);
 
   @if $colorContrast {
     opacity: 0.54;
@@ -37,11 +36,8 @@
 }
 
 @mixin typo-display-3($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 45px;
-  font-weight: 400;
-  line-height: 52px;
-  letter-spacing: 0;
+  font: var(--mt-type-display-medium);
+  letter-spacing: var(--mt-type-display-medium-tracking);
 
   @if $colorContrast {
     opacity: 0.54;
@@ -49,11 +45,8 @@
 }
 
 @mixin typo-display-2($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 36px;
-  font-weight: 400;
-  line-height: 44px;
-  letter-spacing: 0;
+  font: var(--mt-type-display-small);
+  letter-spacing: var(--mt-type-display-small-tracking);
 
   @if $colorContrast {
     opacity: 0.54;
@@ -61,11 +54,8 @@
 }
 
 @mixin typo-display-1($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 32px;
-  font-weight: 400;
-  line-height: 40px;
-  letter-spacing: 0;
+  font: var(--mt-type-headline-large);
+  letter-spacing: var(--mt-type-headline-large-tracking);
 
   @if $colorContrast {
     opacity: 0.54;
@@ -73,11 +63,8 @@
 }
 
 @mixin typo-headline($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: 0;
+  font: var(--mt-type-headline-small);
+  letter-spacing: var(--mt-type-headline-small-tracking);
   -moz-osx-font-smoothing: grayscale;
 
   @if $colorContrast {
@@ -86,11 +73,8 @@
 }
 
 @mixin typo-title($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 28px;
-  letter-spacing: 0;
+  font: var(--mt-type-title-large);
+  letter-spacing: var(--mt-type-title-large-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -98,11 +82,8 @@
 }
 
 @mixin typo-subhead($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: 0.15px;
+  font: var(--mt-type-title-medium);
+  letter-spacing: var(--mt-type-title-medium-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -110,11 +91,8 @@
 }
 
 @mixin typo-subhead-2($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0.5px;
+  font: var(--mt-type-body-large);
+  letter-spacing: var(--mt-type-body-large-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -122,15 +100,8 @@
 }
 
 @mixin typo-body-2($colorContrast: false, $usePreferred: false) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 14px;
-  @if $usePreferred {
-    font-weight: 500;
-  } @else {
-    font-weight: 500;
-  }
-  line-height: 20px;
-  letter-spacing: 0.1px;
+  font: var(--mt-type-title-small);
+  letter-spacing: var(--mt-type-title-small-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -138,11 +109,8 @@
 }
 
 @mixin typo-body-1($colorContrast: false, $usePreferred: false) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0.25px;
+  font: var(--mt-type-body-medium);
+  letter-spacing: var(--mt-type-body-medium-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -150,11 +118,8 @@
 }
 
 @mixin typo-caption($colorContrast: false, $usePreferred: false) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.4px;
+  font: var(--mt-type-body-small);
+  letter-spacing: var(--mt-type-body-small-tracking);
 
   @if $colorContrast {
     opacity: 0.54;
@@ -187,11 +152,8 @@
 }
 
 @mixin typo-menu($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0;
+  font: var(--mt-type-label-large);
+  letter-spacing: var(--mt-type-label-large-tracking);
 
   @if $colorContrast {
     opacity: 0.87;
@@ -199,11 +161,10 @@
 }
 
 @mixin typo-button($colorContrast: false, $usePreferred: true) {
-  @include typo-preferred-font($usePreferred);
-  font-size: 14px;
+  font: var(--mt-type-label-large);
+  letter-spacing: var(--mt-type-label-large-tracking);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.1px;
 
   @if $colorContrast {
     opacity: 0.87;

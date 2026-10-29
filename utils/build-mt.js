@@ -5,7 +5,8 @@
  * Node versions, so this script compiles the SCSS with Dart Sass (via npx)
  * and concatenates the component scripts in the same order as gulpfile.babel.js.
  *
- * Usage: npm run build:mt  ->  dist/mt/material.css, dist/mt/material.js
+ * Usage: npm run build:mt  ->  dist/mt/material.css, dist/mt/material.js,
+ *                             dist/mt/fonts/ (Outfit + Inter, loaded by the CSS)
  */
 'use strict';
 
@@ -57,9 +58,16 @@ var css = fs.readFileSync(cssFile, 'utf8').replace(
   });
 fs.writeFileSync(cssFile, css);
 
+// The CSS loads the bundled fonts from "fonts/" next to material.css.
+var fontsOut = path.join(OUT, 'fonts');
+fs.mkdirSync(fontsOut, {recursive: true});
+fs.readdirSync(path.join(ROOT, 'src', 'fonts')).forEach(function(file) {
+  fs.copyFileSync(path.join(ROOT, 'src', 'fonts', file), path.join(fontsOut, file));
+});
+
 var js = SOURCES.map(function(file) {
   return fs.readFileSync(path.join(ROOT, file), 'utf8');
 }).join('\n');
 fs.writeFileSync(path.join(OUT, 'material.js'), ';(function() {\n' + js + '\n}());\n');
 
-console.log('Built dist/mt/material.css and dist/mt/material.js');
+console.log('Built dist/mt/material.css, dist/mt/material.js and dist/mt/fonts/');

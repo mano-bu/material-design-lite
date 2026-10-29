@@ -64,9 +64,10 @@
    We should be able to improve on this once CSS Font Loading L3 becomes more
    widely available.
 */
-// MT Pagamentos uses Readex Pro for every text style in the Figma library.
-$preferred_font: 'Readex Pro', 'Helvetica', 'Arial', sans-serif !default;
-$performance_font: 'Readex Pro', 'Helvetica', 'Arial', sans-serif !default;
+// MT Pagamentos Typeface collection: display (Outfit) for headings, titles and
+// labels; body (Inter) for running text. Both are bundled in src/fonts.
+$preferred_font: var(--mt-font-display) !default;
+$performance_font: var(--mt-font-body) !default;
 
 /* ==========  COLORS  ========== */
 
@@ -578,21 +579,22 @@ $shadow-ambient-shadow-opacity: 0.12 !default;
 
 /* GRID */
 
+// Figma "Grids" collection: 0-599 (4 cols), 600-839 (12 cols), 840+ (12 cols).
 $grid-desktop-columns: 12 !default;
-$grid-desktop-gutter: 16px !default;
-$grid-desktop-margin: 16px !default;
+$grid-desktop-gutter: 24px !default;
+$grid-desktop-margin: 32px !default;
 
 $grid-desktop-breakpoint: 840px !default;
 
-$grid-tablet-columns: 8 !default;
-$grid-tablet-gutter: $grid-desktop-gutter !default;
-$grid-tablet-margin: $grid-desktop-margin !default;
+$grid-tablet-columns: 12 !default;
+$grid-tablet-gutter: 12px !default;
+$grid-tablet-margin: 12px !default;
 
-$grid-tablet-breakpoint: 480px !default;
+$grid-tablet-breakpoint: 600px !default;
 
 $grid-phone-columns: 4 !default;
-$grid-phone-gutter: $grid-desktop-gutter !default;
-$grid-phone-margin: $grid-desktop-margin !default;
+$grid-phone-gutter: 8px !default;
+$grid-phone-margin: 16px !default;
 
 $grid-cell-default-columns: $grid-phone-columns !default;
 $grid-max-columns: $grid-desktop-columns !default;
